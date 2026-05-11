@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TweetSter.xyz</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body class="bg-gray-800 h-100 w-screen ">
@@ -17,16 +19,16 @@
     </div> -->
     <div
         class="mx-10 lg:mx-25 2xl:mx-100 mt-20 border-1 border-gray-900 border-b-gray-500  bg-gray-900 flex justify-center gap-20 lg:gap-50 text-xl py-2  text-white rounded-t-3xl">
-        <div id="followBtn" class=" text-center" >
-        <button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
+        <div id="followBtn" class=" text-center">
+            <button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
             <hr id="followLine" class="hidden">
         </div>
-        <div id="feedBtn" class=" text-center" >
+        <div id="feedBtn" class=" text-center">
             <button class="cursor-pointer" onclick="showFeed()">Feed</button>
             <hr id="feedLine" class="hidden">
         </div>
 
-        <div id="feedBtn" class=" text-center" >
+        <div id="createBtn" class=" text-center">
             <button class="cursor-pointer" onclick="showCreate()">Create</button>
             <hr id="createLine" class="hidden">
         </div>
@@ -35,7 +37,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-1 " id="disp">
         <div
             class="flex justify-center items-center gap-40 p-5 bg-gray-900 mx-10 lg:mx-25 border border-gray-900 border-b-gray-500 ">
-            <div class="flex items-center gap-10"> 
+            <div class="flex items-center gap-10">
                 <img class="h-15 w-15 rounded-full" src="./gettyimages-1183851342-612x612.jpg" alt="">
                 <span class="text-white">Elon Musk</span>
             </div>
@@ -72,51 +74,63 @@
 
 </body>
 <script>
+    let isLogin = false
     const disp = document.getElementById("disp")
     const feedBtn = document.getElementById("feedBtn")
     const followBtn = document.getElementById("followBtn")
+    const createBtn = document.getElementById("createBtn")
+
     const followed = []
     const content = [{
         user: "elon-musk",
         name: "Elon Musk",
         profile: 'https://pbs.twimg.com/profile_images/2053244804520427520/m8mdWZCG_400x400.jpg',
-        content: [{text:`This is the foundation of my philosophy: I am
+        content: [{
+            text: `This is the foundation of my philosophy: I am
                     curious about the nature of the universe... and obviously I will die... But I would like to know
                     that we are on a path to understanding the nature of the universe and the meaning of life and what
                     questions to ask about the answer that is the universe`,
-                image: ''},
-                {text:` Only when you drive the Cybertruck do you realize how incredible it is: a bulletproof tank that moves like a million dollar sports car! <br>
+            image: ''
+        },
+        {
+            text: ` Only when you drive the Cybertruck do you realize how incredible it is: a bulletproof tank that moves like a million dollar sports car! <br>
 
                 Reason for the angular shape is that the thick, ultra-hard stainless steel body panels cannot be stamped like the thin, feeble, paper-strength mild steel of other trucks. Cybertruck body panels would break 5000 ton stamping machines.`,
-                image: ''}]
+            image: ''
+        }]
     },
     {
         user: "boss",
         name: "TheBeautyOfSaas",
         profile: 'https://pbs.twimg.com/profile_images/2012506138550349824/H7NOzq7E_400x400.jpg',
-        content: [{text:`This is the foundation of my philosophy: I am
+        content: [{
+            text: `This is the foundation of my philosophy: I am
                     curious about the nature of the universe... and obviously I will die... But I would like to know
                     that we are on a path to understanding the nature of the universe and the meaning of life and what
                     questions to ask about the answer that is the universe`,
-                   image: 'https://pbs.twimg.com/media/HGMHM1FXAAAuWbO?format=jpg&name=large'}]
-        
+            image: 'https://pbs.twimg.com/media/HGMHM1FXAAAuWbO?format=jpg&name=large'
+        }]
+
     },
     {
         user: "trish",
         name: "trish",
         profile: 'https://pbs.twimg.com/profile_images/2049026564453781504/2qz0A2i__400x400.jpg',
-        content: [{text:`<div class="text-left text-white">"someone asked Beej how sockets work in C. he got tired of explaining it. so in 1995 he put it all online.
+        content: [{
+            text: `<div class="text-left text-white">"someone asked Beej how sockets work in C. he got tired of explaining it. so in 1995 he put it all online.
                   it's been the definitive socket programming guide for 30 years.
                   it covers everything: TCP, UDP, IPv4, IPv6, non-blocking I/O, select(), poll().
                   graduate OS courses worldwide assign it. it's funnier than any technical book has a right to be.
                   it's free and always will be: <a class="text-center" href = "https://t.co/jxKB0T3lsN">https://t.co/jxKB0T3lsN</a>"</div>`,
-                   image: 'https://pbs.twimg.com/media/HH-0sOla4AAc2sR?format=png&name=900x900'}]
+            image: 'https://pbs.twimg.com/media/HH-0sOla4AAc2sR?format=png&name=900x900'
+        }]
     },
     {
         user: "ChrysBader",
         name: "Chrys Bader",
         profile: 'https://pbs.twimg.com/profile_images/2027968225716428800/KXN4teSk_400x400.jpg',
-        content: [{text:`<div class="text-left text-white">"i spoke to a founder yesterday - their CTO finally read their agent-made codebase after months and panicked when he realized
+        content: [{
+            text: `<div class="text-left text-white">"i spoke to a founder yesterday - their CTO finally read their agent-made codebase after months and panicked when he realized
                      it was impossible to understand wtf was going on
                     my rule of thumb is: if your codebase starts written by agents, don’t try to understand it
                     instead, align at the architectural level before any building happens, and ask the agent to maintain a living architecture diagram of how the system works
@@ -128,13 +142,15 @@
                     if #1 and #2 are dialed in, #3 is where most of the high leverage agentic gains live.
                     as long as you understand the architecture and critical interfaces, it becomes much easier to reason about ground truth and meaningfully iterate
                     understanding and informing the architecture / patterns / abstractions give your codebase maximum longevity and agent maintainability</div>`,
-                   image: 'https://pbs.twimg.com/media/HH5bTI7acAATOzG?format=jpg&name=large'}]
+            image: 'https://pbs.twimg.com/media/HH5bTI7acAATOzG?format=jpg&name=large'
+        }]
     },
     {
         user: "LeeRobinson",
         name: "Lee Robinson",
         profile: 'https://pbs.twimg.com/profile_images/1862717563311968256/xfgt1L9l_400x400.jpg',
-        content: [{text:`<div class="text-left text-white">"How to make your engineering job application stand out (from the perspective of someone looking at hundreds of resumes):<br>
+        content: [{
+            text: `<div class="text-left text-white">"How to make your engineering job application stand out (from the perspective of someone looking at hundreds of resumes):<br>
                     1. Your resume should be one page. If you really need more space, link to a website. You don't need 10+ bullets for each job.<br>
                     2. You will immediately stand out >90% of applications if you link a personal website that has some intentionality behind it.<br>
                     3. If you are going to link your X, you might want to clean up your posts? Seems obvious but... people post some wild stuff.<br>
@@ -147,16 +163,19 @@
                     10. No photos on resumes. Save those for whatever you link out to.<br>
                     11. Quality over quantity. 3 really good, thoughtful, detailed, interesting projects versus a wall of 27 AI-slop ones.<br>
                     Remember that hiring managers / recruiters are getting hundreds or thousands of applications for a role. They're not going to spend 20 minutes on every single application. You need to cut the cruft and get to the point. I hope this helps you stand out!</div>`,
-                    image:''}]
+            image: ''
+        }]
 
     },
     ]
 
-    const showFeed = () => {       
+    const showFeed = () => {
         feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
             <hr id="followLine" class="">`
         followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
-            <hr id="followLine" class="hidden">`   
+            <hr id="followLine" class="hidden">`
+        createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
+            <hr id="followLine" class="hidden">`
         disp.innerHTML = ''
         content.forEach((a, index) => {
             if (followed.includes(a.user)) {
@@ -178,11 +197,11 @@
         if (disp.innerHTML == ``) {
             disp.innerHTML = `<div>
             <div class="py-10 border-0 bg-gray-900 rounded-b-3xl mx-10 lg:mx-25 2xl:mx-100">
-                <p class="text-white text-center text-xl "><span onclick="showFollow()" class="cursor-pointer font-bold">Follow <i class="fa-solid fa-arrow-up-right-from-square"></i></span> some profiles to get started</p>
+                <p class="text-white text-center text-xl "><span onclick="showFollow()" class="cursor-pointer font-bold">Follow <i class="fa-solid fa-arrow-up-right-from-square"></i></span> some profiles to get started or <span onclick="showCreate()" class="cursor-pointer font-bold">Create <i class="fa-solid fa-arrow-up-right-from-square"></i></span>a new post </p>
             </div>`
         }
         console.log(content);
-        
+
     }
 
     const showFollow = () => {
@@ -190,6 +209,8 @@
             <hr id="followLine" class="hidden">`
         followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
             <hr id="followLine" class="">`
+        createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
+            <hr id="followLine" class="hidden">`
         disp.innerHTML = ''
         followIndex = 0
         content.forEach((a, index) => {
@@ -202,7 +223,7 @@
                  </div>
             <button id="" onclick="unFollow(${followIndex})" class="cursor-pointer border-1 border-gray-700 p-2 text-white">Unfollow</button>
         </div>`
-            followIndex++
+                followIndex++
             } else {
                 disp.innerHTML += `<div
             class="flex justify-between items-center gap-10 py-5 px-5 md:px-20 bg-gray-900 mx-10 lg:mx-25 2xl:mx-100 border border-gray-900 border-b-gray-500">
@@ -213,41 +234,82 @@
             <button id="follow" onclick="follow('${a.user}')" class="cursor-pointer border-1 border-gray-700 p-2 text-white">Follow</button>
         </div>`
             }
-            
+
         })
     }
 
-
-    let newPost = {}
-    const showCreate = () => {
-        
+    const userPost = (newPost) => {
+        feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
+            <hr id="followLine" class="hidden">`
+        followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
+            <hr id="followLine" class="hidden">`
+        createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
+            <hr id="followLine" class="">`
         disp.innerHTML = `<form id="newPostForm" class="mx-10 lg:mx-25 2xl:mx-100 px-10  border-b-gray-500 rounded-b-3xl  bg-gray-900 flex flex-col justify-center gap-5  text-xl py-2  text-white">
-        <input id="uName" class="" type="text" placeholder="Enter username">
-        <input  type="text" placeholder="Enter Profile URL/path" name="" id="pURL">
         <input type="text" placeholder="Enter content" id="uContent">
         <input type="text" placeholder="Enter image URL(optional)" name="" id="postImg">
         <button class="cursor-pointer py-3 mx-auto mb-5 bg-gray-800 w-20 border-bg-gray-800 rounded-3xl" >Post</button>
     </form>`
 
-     newPostForm.addEventListener('submit',(e) => {
-        e.preventDefault()
-        newPost["user"] = uName.value
-        newPost.name = uName.value
-        newPost.profile = pURL.value
-        if(newPost.content){
-            newPost["content"].push({text: uContent.value,image: postImg.value})
-        }else {
-            newPost["content"] = []
-            newPost["content"].push({text: uContent.value,image: postImg.value})
-            if(!newPost.image) newPost.image = ''
-            content.unshift(newPost)
-        }
+    newPostForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+            if (newPost.content) {
+                newPost["content"].push({ text: uContent.value, image: postImg.value })
+            } else {
+                newPost["content"] = []
+                newPost["content"].push({ text: uContent.value, image: postImg.value })
+                if (!newPost.image) newPost.image = ''
+                content.unshift(newPost)
+            }
+
+
+
+            followed.push(newPost.user)
+            showFeed()
+        })
+    }
+
+    let newPost = {}
+    const showCreate = () => {
+        // sign in
+        console.log(isLogin);
         
+        if (!isLogin) {
+            feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
+            <hr id="followLine" class="hidden">`
+            followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
+            <hr id="followLine" class="hidden">`
+            createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
+            <hr id="followLine" class="">`
+            disp.innerHTML = `<form id="newPostForm" class="mx-10 lg:mx-25 2xl:mx-100 px-10  border-b-gray-500 rounded-b-3xl  bg-gray-900 flex flex-col justify-center gap-5  text-xl py-2  text-white">
+            <input id="uName" class="" type="text" placeholder="Enter username">
+            <input  type="text" placeholder="Enter Profile URL/path" name="" id="pURL">
+        <button class="cursor-pointer py-3 mx-auto mb-5 bg-gray-800 w-40 border-bg-gray-800 rounded-3xl" >Create Account</button>
+    </form>`
+            newPostForm.addEventListener('submit', e => {
+                e.preventDefault()
+                newPost["user"] = document.getElementById("uName").value 
+                newPost["name"] = document.getElementById("uName").value + ' (you)'
+                newPost["profile"] = document.getElementById("pURL").value
+                userPost(newPost)
+            })
+            
+            isLogin = true
+        } else {
+            feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
+            <hr id="followLine" class="hidden">`
+            followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
+            <hr id="followLine" class="hidden">`
+            createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
+            <hr id="followLine" class="">`
+
+            userPost(newPost)
+        }
+
+
+
 
         
-        followed.push(newPost.user)
-        showFeed()
-    })
     }
 
 
@@ -266,7 +328,7 @@
         showFeed()
     }
 
-   
+
 </script>
 
 </html>
