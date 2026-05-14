@@ -11,29 +11,30 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body class="bg-gray-800 h-100 w-screen ">
-    <h1 class="pt-10 text-center text-xl lg:text-5xl font-bold font-serif text-white">TweetSter.xyz</h1>
+<body class="bg-black w-screen ">
+    <!-- <h1 class="pt-10 text-center text-3xl lg:text-5xl font-bold font-serif text-white">TweetSter.xyz</h1> -->
     <!-- <div class="flex flex-col mt-10  justify-center items-center">
         <button class="border-1 border-gray-500 py-2 px-4">About</button>
         <div  class="hidden">szcfvxzcvxcvzxcv <div>close</div></div>
     </div> -->
-    <div
-        class="mx-10 lg:mx-25 2xl:mx-100 mt-20 border-1 border-gray-900 border-b-gray-500  bg-gray-900 flex justify-center gap-20 lg:gap-50 text-xl py-2  text-white rounded-t-3xl">
-        <div id="followBtn" class=" text-center">
-            <button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
-            <hr id="followLine" class="hidden">
+    <div class="borde border-gray-500 rounded-3l mt-0 ">
+        <div
+            class=" mt-0 border-1 border-gray-900 border-b-gray-500  bg-bg-black flex justify-center gap-20 lg:gap-50 text-xl py-5  text-white rounded-t-3xl">
+            <div id="followBtn" class=" text-center">
+                <button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
+                <hr id="followLine" class="hidden">
+            </div>
+            <div id="feedBtn" class=" text-center">
+                <button class="cursor-pointer" onclick="showFeed()">Feed</button>
+                <hr id="feedLine" class="hidden">
+            </div>
+    
+            <div id="createBtn" class=" text-center">
+                <button class="cursor-pointer" onclick="showCreate()">Create</button>
+                <hr id="createLine" class="hidden">
+            </div>
         </div>
-        <div id="feedBtn" class=" text-center">
-            <button class="cursor-pointer" onclick="showFeed()">Feed</button>
-            <hr id="feedLine" class="hidden">
-        </div>
-
-        <div id="createBtn" class=" text-center">
-            <button class="cursor-pointer" onclick="showCreate()">Create</button>
-            <hr id="createLine" class="hidden">
-        </div>
-    </div>
-
+    
     <div class="grid grid-cols-1 lg:grid-cols-1 " id="disp">
         <div
             class="flex justify-center items-center gap-40 p-5 bg-gray-900 mx-10 lg:mx-25 border border-gray-900 border-b-gray-500 ">
@@ -53,10 +54,15 @@
                 class="border-1 border-gray-700 p-2 text-white">Follow</button>
         </div>
         <div class="mx-10 lg:mx-25 bg-gray-900">
-            <div class="flex justify-start items-center gap-10 ms-10 py-3">
-                <img class="h-10 w-10 rounded-full"
-                    src="https://pbs.twimg.com/profile_images/2012506138550349824/H7NOzq7E_400x400.jpg" alt="">
-                <span class="text-white">TheBeautyOfSaas</span>
+            <div class="flex justify-between items-center gap-10 ms-10 py-3">
+                <div class="flex justify-center items-center gap-3">
+                    <img class="h-10 w-10 rounded-full " src="${a.profile}" alt="">
+                    <span class="text-white text-xl">${a.name}</span>
+                </div>
+                <div class="flex justify-between gap-2">
+                    <button class="border border-gray-500 text-white px-3 py-2">Edit</button>
+                    <button class="border border-red-500 text-red- px-3 py-2">remove</button>
+                </div>
             </div>
             <div class="mx-10 pb-10 flex flex-col justify-center items-center">
                 <p class="text-justify ">"someone asked Beej how sockets work in C. he got tired of explaining it. so in
@@ -71,10 +77,12 @@
 
         </div>
     </div>
+</div>
 
 </body>
 <script>
     let isLogin = false
+    let users = []
     const disp = document.getElementById("disp")
     const feedBtn = document.getElementById("feedBtn")
     const followBtn = document.getElementById("followBtn")
@@ -104,10 +112,7 @@
         name: "TheBeautyOfSaas",
         profile: 'https://pbs.twimg.com/profile_images/2012506138550349824/H7NOzq7E_400x400.jpg',
         content: [{
-            text: `This is the foundation of my philosophy: I am
-                    curious about the nature of the universe... and obviously I will die... But I would like to know
-                    that we are on a path to understanding the nature of the universe and the meaning of life and what
-                    questions to ask about the answer that is the universe`,
+            text: ``,
             image: 'https://pbs.twimg.com/media/HGMHM1FXAAAuWbO?format=jpg&name=large'
         }]
 
@@ -180,7 +185,7 @@
         content.forEach((a, index) => {
             if (followed.includes(a.user)) {
                 a.content.forEach(b => {
-                    disp.innerHTML += `<div class="mx-10 lg:mx-25 2xl:mx-100 bg-gray-900">
+                    disp.innerHTML += `<div class=" bg-black border border-gray-800 xl:mx-75">
             <div class="flex justify-start items-center gap-2 ms-10 py-3">
                 <img class="h-10 w-10 rounded-full " src="${a.profile}" alt="">
                 <span class="text-white text-xl">${a.name}</span>
@@ -196,7 +201,7 @@
 
         if (disp.innerHTML == ``) {
             disp.innerHTML = `<div>
-            <div class="py-10 border-0 bg-gray-900 rounded-b-3xl mx-10 lg:mx-25 2xl:mx-100">
+            <div class="py-10 border-0 bg-black rounded-b-3xl m">
                 <p class="text-white text-center text-xl "><span onclick="showFollow()" class="cursor-pointer font-bold">Follow <i class="fa-solid fa-arrow-up-right-from-square"></i></span> some profiles to get started or <span onclick="showCreate()" class="cursor-pointer font-bold">Create <i class="fa-solid fa-arrow-up-right-from-square"></i></span>a new post </p>
             </div>`
         }
@@ -216,7 +221,7 @@
         content.forEach((a, index) => {
             if (followed.includes(a.user)) {
                 disp.innerHTML += `
-            <div class="flex justify-between items-center gap-10 py-5 px-5 md:px-20 bg-gray-900 mx-10 lg:mx-25 2xl:mx-100 border border-gray-900 border-b-gray-500">
+            <div class="flex justify-between items-center gap-10 py-5 px-5 md:px-20 bg-black xl:mx-75  borer border-gray-900 border-b-gray-500">
                 <div class="flex items-center gap-10">
                  <img class="h-15 w-15 rounded-full" src="${a.profile}" alt="">
                  <span class="text-white">${a.name}</span>
@@ -226,7 +231,7 @@
                 followIndex++
             } else {
                 disp.innerHTML += `<div
-            class="flex justify-between items-center gap-10 py-5 px-5 md:px-20 bg-gray-900 mx-10 lg:mx-25 2xl:mx-100 border border-gray-900 border-b-gray-500">
+            class="flex justify-between items-center gap-10 py-5 px-5 md:px-20 bg-black xl:mx-75  bordr border-gray-900 border-b-gray-500">
             <div class="flex items-center  gap-10">
                  <img class="h-15 w-15 rounded-full" src="${a.profile}" alt="">
                  <span class="text-white">${a.name}</span>
@@ -237,64 +242,47 @@
 
         })
     }
-
-    const userPost = (newPost) => {
-        feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
-            <hr id="followLine" class="hidden">`
-        followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
-            <hr id="followLine" class="hidden">`
-        createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
-            <hr id="followLine" class="">`
-        disp.innerHTML = `<form id="newPostForm" class="mx-10 lg:mx-25 2xl:mx-100 px-10  border-b-gray-500 rounded-b-3xl  bg-gray-900 flex flex-col justify-center gap-5  text-xl py-2  text-white">
-        <input type="text" placeholder="Enter content" id="uContent">
-        <input type="text" placeholder="Enter image URL(optional)" name="" id="postImg">
-        <button class="cursor-pointer py-3 mx-auto mb-5 bg-gray-800 w-20 border-bg-gray-800 rounded-3xl" >Post</button>
-    </form>`
-
-    newPostForm.addEventListener('submit', (e) => {
-            e.preventDefault()
-            if (newPost.content) {
-                newPost["content"].push({ text: uContent.value, image: postImg.value })
-            } else {
-                newPost["content"] = []
-                newPost["content"].push({ text: uContent.value, image: postImg.value })
-                if (!newPost.image) newPost.image = ''
-                content.unshift(newPost)
-            }
-
-
-
-            followed.push(newPost.user)
-            showFeed()
-        })
-    }
-
+   
     let newPost = {}
     const showCreate = () => {
         // sign in
         console.log(isLogin);
         
         if (!isLogin) {
+            
             feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
             <hr id="followLine" class="hidden">`
             followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
             <hr id="followLine" class="hidden">`
             createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
             <hr id="followLine" class="">`
-            disp.innerHTML = `<form id="newPostForm" class="mx-10 lg:mx-25 2xl:mx-100 px-10  border-b-gray-500 rounded-b-3xl  bg-gray-900 flex flex-col justify-center gap-5  text-xl py-2  text-white">
-            <input id="uName" class="" type="text" placeholder="Enter username">
-            <input  type="text" placeholder="Enter Profile URL/path" name="" id="pURL">
-        <button class="cursor-pointer py-3 mx-auto mb-5 bg-gray-800 w-40 border-bg-gray-800 rounded-3xl" >Create Account</button>
+            disp.innerHTML = `<form id="newPostForm" class="mt-20 px-10  border-b-gray-500 rounded-b-3xl  bg-black flex flex-col justify-center gap-5  text-xl py-2  text-white">
+            <input id="uName" class="text-center border border-gray-500 w-75 md:w-110 xl:w-2/5 py-3 mb-3  mx-auto" type="text" placeholder="Enter username">
+            <input id="uName" class="text-center border border-gray-500 w-75 md:w-110 xl:w-2/5 py-3 mb-3 mx-auto" type="text" placeholder="Enter Password">
+            <input  type="text" class="text-center border border-gray-500 w-75 md:w-110 xl:w-2/5 py-3 mb-3 mx-auto" placeholder="Enter Profile picture URL" name="" id="pURL">
+        <button class="cursor-pointer py-3 mx-auto mb bg-gray-300 w-40 border-bg-gray-800 rounded-3xl text-black" >Create Account</button>
+        <div class="mx-auto" >Or</div>
+        <span class="cursor-pointer py-3 mx-auto mb-5 bg-gray-300 w-40 border-bg-gray-800 rounded-3xl text-black text-center" >Log in</span>
     </form>`
             newPostForm.addEventListener('submit', e => {
                 e.preventDefault()
                 newPost["user"] = document.getElementById("uName").value 
-                newPost["name"] = document.getElementById("uName").value + ' (you)'
+                newPost["name"] = document.getElementById("uName").value
                 newPost["profile"] = document.getElementById("pURL").value
-                userPost(newPost)
+                if(!(URL.canParse(newPost["profile"]))){
+                    alert("Invalid input. Input must be an image link")
+                    isLogin = false
+                    showCreate()
+                }else{
+                    isLogin = true
+                    userPost(newPost)
+                    users.push({uName:newPost["user"],name:newPost["name"],profile:newPost["profile"]})
+                    console.log(users);
+                    
+                }
             })
             
-            isLogin = true
+            
         } else {
             feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
             <hr id="followLine" class="hidden">`
@@ -306,12 +294,35 @@
             userPost(newPost)
         }
 
-
-
-
-        
     }
 
+    const userPost = (newPost) => {
+        feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
+            <hr id="followLine" class="hidden">`
+        followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
+            <hr id="followLine" class="hidden">`
+        createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
+            <hr id="followLine" class="">`
+        disp.innerHTML = `<form id="newPostForm" class="mt-30 mx-10 lg:mx-25 2xl:mx-100 px-10 bg-black flex flex-col justify-center gap-5  text-xl py-2  text-white">
+        <input type="text" placeholder="Enter content" id="uContent">
+        <input type="text" placeholder="Enter image URL(optional)" name="" id="postImg">
+        <button class="cursor-pointer py-3 mx-auto mb-5 bg-gray-300 text-black w-20 border-bg-gray-800 rounded-3xl" >Post</button>
+    </form>`
+
+    newPostForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+            if (newPost.content) {
+                newPost["content"].push({ text: uContent.value, image: postImg.value })
+            } else {
+                newPost["content"] = []
+                newPost["content"].push({ text: uContent.value, image: postImg.value })
+                if (!newPost.image) newPost.image = ''
+                content.push(newPost)
+            }
+            followed.push(newPost.user)
+            showFeed()
+        })
+    }
 
 
     const follow = (item) => {
