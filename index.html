@@ -4,342 +4,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TweetSter.xyz</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>TweetSter</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        * {
+            color: white;
+            /* outline: 1px red solid; */
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body class="bg-black w-screen ">
-    <!-- <h1 class="pt-10 text-center text-3xl lg:text-5xl font-bold font-serif text-white">TweetSter.xyz</h1> -->
-    <!-- <div class="flex flex-col mt-10  justify-center items-center">
-        <button class="border-1 border-gray-500 py-2 px-4">About</button>
-        <div  class="hidden">szcfvxzcvxcvzxcv <div>close</div></div>
-    </div> -->
-    <div class="borde border-gray-500 rounded-3l mt-0 ">
-        <div
-            class=" mt-0 border-1 border-gray-900 border-b-gray-500  bg-bg-black flex justify-center gap-20 lg:gap-50 text-xl py-5  text-white rounded-t-3xl">
-            <div id="followBtn" class=" text-center">
-                <button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
-                <hr id="followLine" class="hidden">
-            </div>
-            <div id="feedBtn" class=" text-center">
-                <button class="cursor-pointer" onclick="showFeed()">Feed</button>
-                <hr id="feedLine" class="hidden">
-            </div>
+<body class="bg-black ">
+    <div class="sticky  top-0 bg-black w-full ">
+        <div id="Header" class=" flex justify-center px-20 py-5 text-xl font-bold">
+            TweetSter
+        </div>
+        <hr class="bg-[#ffffff]">
+    </div>
+    <div class="hidden lg:block fixed top-30 left-0 w-1/9">
+        <ul class="ms-20 grid grid-cols-1 gap-5">
+            <li onclick="refreshPosts()" class="text-xl cursor-pointer">Feed</li>
+            <li class="text-xl cursor-pointer">Following</li>
+            <li class="text-xl cursor-pointer">Trending</li>
+            <li class="text-xl cursor-pointer">Bookmarks</li>
+            <li class="text-xl cursor-pointer">Likes</li>
+            <li onclick="profileGate()" class="text-xl cursor-pointer">Profile</li>
+            <li onclick="userStateChange()" class="text-xl" id="accountAction">Login</li>
+        </ul>
+    </div>
     
-            <div id="createBtn" class=" text-center">
-                <button class="cursor-pointer" onclick="showCreate()">Create</button>
-                <hr id="createLine" class="hidden">
-            </div>
+    <div class="fixed top-30 right-0 w-1/9">
+        <ul id="displayProfiles ">
+            <li>kljhlkjh</li>
+        </ul>
+    </div>
+    <div class="w-full  grid grid-cols-1 lg:grid-cols-6 ">
+        <div class="">
+            <ul>
+                <li></li>
+            </ul>
         </div>
-    
-    <div class="grid grid-cols-1 lg:grid-cols-1 " id="disp">
-        <div
-            class="flex justify-center items-center gap-40 p-5 bg-gray-900 mx-10 lg:mx-25 border border-gray-900 border-b-gray-500 ">
-            <div class="flex items-center gap-10">
-                <img class="h-15 w-15 rounded-full" src="./gettyimages-1183851342-612x612.jpg" alt="">
-                <span class="text-white">Elon Musk</span>
-            </div>
-            <button id="follow" onclick="follow('elon-musk')" value="elon-musk"
-                class="border-1 border-gray-700 p-2 text-white underline">Follow</button>
-        </div>
-        <div
-            class="flex justify-center items-center gap-10 p-5 bg-gray-900 mx-10 lg:mx-25 border border-gray-900 border-b-gray-500">
-            <img class="h-15 w-15 rounded-full"
-                src="https://pbs.twimg.com/profile_images/2012506138550349824/H7NOzq7E_400x400.jpg" alt="">
-            <span class="text-white">TheBeautyOfSaas</span>
-            <button id="follow" onclick="follow('TheBeautyOfSaas')" value="boss"
-                class="border-1 border-gray-700 p-2 text-white">Follow</button>
-        </div>
-        <div class="mx-10 lg:mx-25 bg-gray-900">
-            <div class="flex justify-between items-center gap-10 ms-10 py-3">
-                <div class="flex justify-center items-center gap-3">
-                    <img class="h-10 w-10 rounded-full " src="${a.profile}" alt="">
-                    <span class="text-white text-xl">${a.name}</span>
+        <div class="lg:col-span-4 border-l border-r border-white h-[100%]">
+            <!-- <form id="newPostForm">
+                <div id="inputArea" class="flex justify-center w-full ">
+                    <input type="text" placeholder="Whats Happening?"
+                        class="placeholder:text-white px-4 py-10 my-4 border-1 border-gray-600 w-[90%]">
                 </div>
-                <div class="flex justify-between gap-2">
-                    <button class="border border-gray-500 text-white px-3 py-2">Edit</button>
-                    <button class="border border-red-500 text-red- px-3 py-2">remove</button>
+
+                <div class="flex pe-12 justify-end items-center gap-5">
+                    <i class="fa-regular fa-image text-3xl"></i>
+                    <button class="border-1 border-blue-400 py-2 px-4 rounded-3xl bg-blue-400 ">POST</button>
                 </div>
-            </div>
-            <div class="mx-10 pb-10 flex flex-col justify-center items-center">
-                <p class="text-justify ">"someone asked Beej how sockets work in C. he got tired of explaining it. so in
-                    1995 he put it all online.
-                    it's been the definitive socket programming guide for 30 years.
-                    it covers everything: TCP, UDP, IPv4, IPv6, non-blocking I/O, select(), poll().
-                    graduate OS courses worldwide assign it. it's funnier than any technical book has a right to be.
-                    it's free and always will be. <br> <a class="text-center"
-                        href="https://t.co/jxKB0T3lsN">https://t.co/jxKB0T3lsN</a>"</p>
-                <img src="https://pbs.twimg.com/media/HH9X7Q6bYAAgcwM?format=jpg&name=medium" alt="">
+            </form> -->
+
+            <div class="" id="displayArea">
+                <div class="card">
+                    <!-- <div class="flex justify-between p-4">
+                        <div class="flex justify-start items-center gap-2">
+                            <img src="https://pbs.twimg.com/profile_images/2053244804520427520/m8mdWZCG_400x400.jpg" class="h-10 w-10 border-1 rounded-3xl" alt="">
+                            <span>Elon Musk</span>
+                        </div>
+                        <div class="flex items-center justify-end gap-2">
+                            <button>Follow</button>
+                            <button>Hide</button>
+                        </div>
+                    </div>
+                    <div class="px-4 text-justify">
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt ex qui maxime aliquid dolorem numquam labore aut, non temporibus hic laboriosam officiis eum modi nobis ratione fugiat dolorum quas dolores.</p>
+                        <img src="" alt="">
+                    </div>
+                </div> -->
+                </div>
+                <!-- login -->
+                <!-- <div class="w-full h-[70vh]">
+                    <form class="flex flex-col h-full justify-center items-center">
+                        <h1 class="text-3xl">Login to Tweetster</h1>
+                        <input class="my-5 py-3 border border-white w-100 placeholder:text-center" type="text" placeholder="Enter username">
+                        <input class="my-5 py-3 border border-white w-100 placeholder:text-center" type="password" placeholder="Enter password">
+                        <button class="bg-white text-xl rounded-3xl !text-black py-3 px-10">Login</button>
+                        <h3 class="my-5">Or</h3>
+                        <span onclick="newAccount()" class="bg-white text-xl rounded-3xl !text-black py-3 px-10">Create Account</span>
+                    </form>
+                </div> -->
+                <!--create account-->
+                <!-- <div class="w-full h-[70vh]">
+                    <form id="createForm" class="flex flex-col gap-6 h-full justify-center items-center">
+                        <h1 class="text-3xl font-bold">Tweetster</h1>
+                        <p class="text-xl">Create your account</p>
+                        <input id="newUser" class=" py-3 border rounded-3xl border-white w-100 placeholder:text-center" type="text" placeholder="Enter username">
+                        <input id="newPassword" class=" py-3 border rounded-3xl border-white w-100 placeholder:text-center" type="password" placeholder="Enter password">
+                        <input id="newPasswordConfirm" class=" py-3 border rounded-3xl border-white w-100 placeholder:text-center" type="password" placeholder="Confirm password">
+                        <div><input type="checkbox"><span>I agree to the terms of service and privacy policy</span></div>
+                        <button class="bg-white text-xl rounded-3xl !text-black py-3 px-10">Create Acount</button>             
+                    </form>
+                </div> -->
+
+                <!-- <div class="w-full ">
+                    <form id="addPfpuserName" action="" class="h-[70vh] flex flex-col justify-center items-center gap-5">
+                        <h1 class="text-3xl font-bold">Welcome to TweetSter!</h1>
+                        <h3 class="text-xl ">Finish setting up your account</h3>
+                        <input class="py-3 border rounded-3xl border-white w-100 placeholder:text-center text-center" type="text" placeholder="Add display name">
+                        <input class="py-3 border rounded-3xl border-white w-100 placeholder:text-center text-center" type="text" placeholder="Add profile picture url" name="" id="">
+                        <img src="" alt="" id="pfpPreview">
+                    </form>
+                </div> -->
+
+
+
             </div>
 
         </div>
     </div>
-</div>
-
+    <footer class="flex w-full lg:hidden fixed -bottom-4 px-20 justify-between py-5 pb-10 bg-black ">
+        <span onclick="refreshPosts()" class="text-xl cursor-pointer group"><i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <span onclick="profileGate()" class="text-xl cursor-pointer group">
+            <i class="fa-solid fa-user-shield"></i>
+        </span>
+        <span class="text-xl cursor-pointer group">
+            <i class="fa-solid fa-users"></i>
+        </span>
+        <span class="text-xl cursor-pointer group">
+            <i class="fa-solid fa-heart"></i>
+        </span>
+    </footer>
+    <div class="block lg:hidden bg-black mb-10"></div>
 </body>
-<script>
-    let isLogin = false
-    let users = []
-    const disp = document.getElementById("disp")
-    const feedBtn = document.getElementById("feedBtn")
-    const followBtn = document.getElementById("followBtn")
-    const createBtn = document.getElementById("createBtn")
-
-    const followed = []
-    const content = [{
-        user: "elon-musk",
-        name: "Elon Musk",
-        profile: 'https://pbs.twimg.com/profile_images/2053244804520427520/m8mdWZCG_400x400.jpg',
-        content: [{
-            text: `This is the foundation of my philosophy: I am
-                    curious about the nature of the universe... and obviously I will die... But I would like to know
-                    that we are on a path to understanding the nature of the universe and the meaning of life and what
-                    questions to ask about the answer that is the universe`,
-            image: ''
-        },
-        {
-            text: ` Only when you drive the Cybertruck do you realize how incredible it is: a bulletproof tank that moves like a million dollar sports car! <br>
-
-                Reason for the angular shape is that the thick, ultra-hard stainless steel body panels cannot be stamped like the thin, feeble, paper-strength mild steel of other trucks. Cybertruck body panels would break 5000 ton stamping machines.`,
-            image: ''
-        }]
-    },
-    {
-        user: "boss",
-        name: "TheBeautyOfSaas",
-        profile: 'https://pbs.twimg.com/profile_images/2012506138550349824/H7NOzq7E_400x400.jpg',
-        content: [{
-            text: ``,
-            image: 'https://pbs.twimg.com/media/HGMHM1FXAAAuWbO?format=jpg&name=large'
-        }]
-
-    },
-    {
-        user: "trish",
-        name: "trish",
-        profile: 'https://pbs.twimg.com/profile_images/2049026564453781504/2qz0A2i__400x400.jpg',
-        content: [{
-            text: `<div class="text-left text-white">"someone asked Beej how sockets work in C. he got tired of explaining it. so in 1995 he put it all online.
-                  it's been the definitive socket programming guide for 30 years.
-                  it covers everything: TCP, UDP, IPv4, IPv6, non-blocking I/O, select(), poll().
-                  graduate OS courses worldwide assign it. it's funnier than any technical book has a right to be.
-                  it's free and always will be: <a class="text-center" href = "https://t.co/jxKB0T3lsN">https://t.co/jxKB0T3lsN</a>"</div>`,
-            image: 'https://pbs.twimg.com/media/HH-0sOla4AAc2sR?format=png&name=900x900'
-        }]
-    },
-    {
-        user: "ChrysBader",
-        name: "Chrys Bader",
-        profile: 'https://pbs.twimg.com/profile_images/2027968225716428800/KXN4teSk_400x400.jpg',
-        content: [{
-            text: `<div class="text-left text-white">"i spoke to a founder yesterday - their CTO finally read their agent-made codebase after months and panicked when he realized
-                     it was impossible to understand wtf was going on
-                    my rule of thumb is: if your codebase starts written by agents, don’t try to understand it
-                    instead, align at the architectural level before any building happens, and ask the agent to maintain a living architecture diagram of how the system works
-                    there are three altitudes that matter:<br>
-                    - Top-level: architecture<br>
-                    - Mid-level: patterns & abstractions<br>
-                    - Low-level: file-level code<br>
-                    in today’s world, a CTO should be deeply concerned with #1. #2 matters too, but not as critical as #1.
-                    if #1 and #2 are dialed in, #3 is where most of the high leverage agentic gains live.
-                    as long as you understand the architecture and critical interfaces, it becomes much easier to reason about ground truth and meaningfully iterate
-                    understanding and informing the architecture / patterns / abstractions give your codebase maximum longevity and agent maintainability</div>`,
-            image: 'https://pbs.twimg.com/media/HH5bTI7acAATOzG?format=jpg&name=large'
-        }]
-    },
-    {
-        user: "LeeRobinson",
-        name: "Lee Robinson",
-        profile: 'https://pbs.twimg.com/profile_images/1862717563311968256/xfgt1L9l_400x400.jpg',
-        content: [{
-            text: `<div class="text-left text-white">"How to make your engineering job application stand out (from the perspective of someone looking at hundreds of resumes):<br>
-                    1. Your resume should be one page. If you really need more space, link to a website. You don't need 10+ bullets for each job.<br>
-                    2. You will immediately stand out >90% of applications if you link a personal website that has some intentionality behind it.<br>
-                    3. If you are going to link your X, you might want to clean up your posts? Seems obvious but... people post some wild stuff.<br>
-                    4. You should link your GitHub. Please avoid doing a profile README that looks like a MySpace profile with the badges and images. I'm trying to look at code and your ability to build interesting ideas.<br>
-                    5. You should try to customize your application to the company. If you're applying to a startup, the courses you took in college probably don't matter as much. Maybe more if you're trying to make it through the ATS screening for FAANG.<br>
-                    6. I'm seeing a surprising number of resumes which don't talk about AI or agents at all. Software engineering is changing and it's a pretty fair assumption that you will be expected to learn or understand coding with AI for your job. That should be reflected on your resume and projects (and I'm not just saying this because I'm at Cursor).<br>
-                    7. Take your LinkedIn seriously. Most devs are here hanging out on X but surprisingly still most people will send around your LinkedIn internally.<br>
-                    8. Find ways to show your unique strengths/tastes/interests. It's nice to see people are smart, well-rounded, and thoughtful. Maybe this is a collection of books you enjoyed and why. Or some writing you've done. Or films you liked. At the end of the day, people want to work with other people they like and respect. If nothing else, it will be a good conversation starter ("oh I love [book] as well!").<br>
-                    9. Do not use AI to write your cover letter or resume text. It's incredibly obvious, especially if you are applying to an AI company. You can still use it to ideate on ideas or phrases, but write it by hand (don't fall victim to the overused in-the-distribution-AI-phrases). See: /humanizer skill.<br>
-                    10. No photos on resumes. Save those for whatever you link out to.<br>
-                    11. Quality over quantity. 3 really good, thoughtful, detailed, interesting projects versus a wall of 27 AI-slop ones.<br>
-                    Remember that hiring managers / recruiters are getting hundreds or thousands of applications for a role. They're not going to spend 20 minutes on every single application. You need to cut the cruft and get to the point. I hope this helps you stand out!</div>`,
-            image: ''
-        }]
-
-    },
-    ]
-
-    const showFeed = () => {
-        feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
-            <hr id="followLine" class="">`
-        followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
-            <hr id="followLine" class="hidden">`
-        createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
-            <hr id="followLine" class="hidden">`
-        disp.innerHTML = ''
-        content.forEach((a, index) => {
-            if (followed.includes(a.user)) {
-                a.content.forEach(b => {
-                    disp.innerHTML += `<div class=" bg-black border border-gray-800 xl:mx-75">
-            <div class="flex justify-start items-center gap-2 ms-10 py-3">
-                <img class="h-10 w-10 rounded-full " src="${a.profile}" alt="">
-                <span class="text-white text-xl">${a.name}</span>
-            </div>
-            <div class="mx-10 pb-10 flex flex-col justify-center items-center">
-                <p class="text-white mb-5 ">${b.text}</p>
-                <img class="object-center md:max-w-100 xl:max-w-200 pt-5" src="${b.image}" alt="">
-            </div>
-        </div>`
-                })
-            }
-        })
-
-        if (disp.innerHTML == ``) {
-            disp.innerHTML = `<div>
-            <div class="py-10 border-0 bg-black rounded-b-3xl m">
-                <p class="text-white text-center text-xl "><span onclick="showFollow()" class="cursor-pointer font-bold">Follow <i class="fa-solid fa-arrow-up-right-from-square"></i></span> some profiles to get started or <span onclick="showCreate()" class="cursor-pointer font-bold">Create <i class="fa-solid fa-arrow-up-right-from-square"></i></span>a new post </p>
-            </div>`
-        }
-        console.log(content);
-
-    }
-
-    const showFollow = () => {
-        feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
-            <hr id="followLine" class="hidden">`
-        followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
-            <hr id="followLine" class="">`
-        createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
-            <hr id="followLine" class="hidden">`
-        disp.innerHTML = ''
-        followIndex = 0
-        content.forEach((a, index) => {
-            if (followed.includes(a.user)) {
-                disp.innerHTML += `
-            <div class="flex justify-between items-center gap-10 py-5 px-5 md:px-20 bg-black xl:mx-75  borer border-gray-900 border-b-gray-500">
-                <div class="flex items-center gap-10">
-                 <img class="h-15 w-15 rounded-full" src="${a.profile}" alt="">
-                 <span class="text-white">${a.name}</span>
-                 </div>
-            <button id="" onclick="unFollow(${followIndex})" class="cursor-pointer border-1 border-gray-700 p-2 text-white">Unfollow</button>
-        </div>`
-                followIndex++
-            } else {
-                disp.innerHTML += `<div
-            class="flex justify-between items-center gap-10 py-5 px-5 md:px-20 bg-black xl:mx-75  bordr border-gray-900 border-b-gray-500">
-            <div class="flex items-center  gap-10">
-                 <img class="h-15 w-15 rounded-full" src="${a.profile}" alt="">
-                 <span class="text-white">${a.name}</span>
-            </div>
-            <button id="follow" onclick="follow('${a.user}')" class="cursor-pointer border-1 border-gray-700 p-2 text-white">Follow</button>
-        </div>`
-            }
-
-        })
-    }
-   
-    let newPost = {}
-    const showCreate = () => {
-        // sign in
-        console.log(isLogin);
-        
-        if (!isLogin) {
-            
-            feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
-            <hr id="followLine" class="hidden">`
-            followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
-            <hr id="followLine" class="hidden">`
-            createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
-            <hr id="followLine" class="">`
-            disp.innerHTML = `<form id="newPostForm" class="mt-20 px-10  border-b-gray-500 rounded-b-3xl  bg-black flex flex-col justify-center gap-5  text-xl py-2  text-white">
-            <input id="uName" class="text-center border border-gray-500 w-75 md:w-110 xl:w-2/5 py-3 mb-3  mx-auto" type="text" placeholder="Enter username">
-            <input id="uName" class="text-center border border-gray-500 w-75 md:w-110 xl:w-2/5 py-3 mb-3 mx-auto" type="text" placeholder="Enter Password">
-            <input  type="text" class="text-center border border-gray-500 w-75 md:w-110 xl:w-2/5 py-3 mb-3 mx-auto" placeholder="Enter Profile picture URL" name="" id="pURL">
-        <button class="cursor-pointer py-3 mx-auto mb bg-gray-300 w-40 border-bg-gray-800 rounded-3xl text-black" >Create Account</button>
-        <div class="mx-auto" >Or</div>
-        <span class="cursor-pointer py-3 mx-auto mb-5 bg-gray-300 w-40 border-bg-gray-800 rounded-3xl text-black text-center" >Log in</span>
-    </form>`
-            newPostForm.addEventListener('submit', e => {
-                e.preventDefault()
-                newPost["user"] = document.getElementById("uName").value 
-                newPost["name"] = document.getElementById("uName").value
-                newPost["profile"] = document.getElementById("pURL").value
-                if(!(URL.canParse(newPost["profile"]))){
-                    alert("Invalid input. Input must be an image link")
-                    isLogin = false
-                    showCreate()
-                }else{
-                    isLogin = true
-                    userPost(newPost)
-                    users.push({uName:newPost["user"],name:newPost["name"],profile:newPost["profile"]})
-                    console.log(users);
-                    
-                }
-            })
-            
-            
-        } else {
-            feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
-            <hr id="followLine" class="hidden">`
-            followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
-            <hr id="followLine" class="hidden">`
-            createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
-            <hr id="followLine" class="">`
-
-            userPost(newPost)
-        }
-
-    }
-
-    const userPost = (newPost) => {
-        feedBtn.innerHTML = `<button class="cursor-pointer " onclick="showFeed()">Feed</button class="">
-            <hr id="followLine" class="hidden">`
-        followBtn.innerHTML = `<button class="cursor-pointer " onclick="showFollow()">Follow</button class="">
-            <hr id="followLine" class="hidden">`
-        createBtn.innerHTML = `<button class="cursor-pointer " onclick="showCreate()">Create</button class="">
-            <hr id="followLine" class="">`
-        disp.innerHTML = `<form id="newPostForm" class="mt-30 mx-10 lg:mx-25 2xl:mx-100 px-10 bg-black flex flex-col justify-center gap-5  text-xl py-2  text-white">
-        <input type="text" placeholder="Enter content" id="uContent">
-        <input type="text" placeholder="Enter image URL(optional)" name="" id="postImg">
-        <button class="cursor-pointer py-3 mx-auto mb-5 bg-gray-300 text-black w-20 border-bg-gray-800 rounded-3xl" >Post</button>
-    </form>`
-
-    newPostForm.addEventListener('submit', (e) => {
-            e.preventDefault()
-            if (newPost.content) {
-                newPost["content"].push({ text: uContent.value, image: postImg.value })
-            } else {
-                newPost["content"] = []
-                newPost["content"].push({ text: uContent.value, image: postImg.value })
-                if (!newPost.image) newPost.image = ''
-                content.push(newPost)
-            }
-            followed.push(newPost.user)
-            showFeed()
-        })
-    }
-
-
-    const follow = (item) => {
-        followed.push(item)
-        showFollow()
-    }
-
-    const unFollow = (index) => {
-        followed.splice(index, 1)
-        showFollow()
-    }
-
-    window.onload = () => {
-        showFeed()
-    }
-
-
-</script>
+<script src="script.js"></script>
 
 </html>
