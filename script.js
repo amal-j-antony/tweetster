@@ -208,12 +208,14 @@ const addFollow = (userId) => {
     index = accounts.findIndex(a => a.userID == userId)
     accounts[index].isFollowed = true
     refreshPosts()
+    refreshProfiles()
 }
 
 function removeFollow(userId) {
     index = accounts.findIndex(a => a.userID == userId)
     accounts[index].isFollowed = false
     refreshPosts()
+    refreshProfiles()
 }
 
 
@@ -325,6 +327,46 @@ function refreshPosts() {
     })
 
    
+}
+
+function refreshProfiles() {
+    const displayAreaProfiles = document.getElementById("displayAreaProfiles")
+    displayAreaProfiles.innerHTML = ''
+    let profiles = accounts.map((item,index) => {
+        if(item.isFollowed){
+            displayAreaProfiles.innerHTML+=  `
+                <div class="flex justify-between">
+                    <div class="flex justify-start items-center gap-2">
+                        <img src="${item.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
+                        <div>
+                        <h1>  ${item.name}</h1>
+                        <h1 class="!text-zinc-400">@${item.userName}</h1>
+                        </div>
+                    </div>
+                    <div id=userDetail class="flex items-center justify-end gap-2">
+                        <button class="cursor-pointer" onclick="removeFollow(${item.userID})">Unfollow</button>
+                    </div>
+                </div>`
+        }else {
+             displayAreaProfiles.innerHTML+= `
+                <div class="flex justify-between">
+                    <div class="flex justify-start items-center gap-2">
+                        <img src="${item.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
+                        <div>
+                        <h1>  ${item.name}</h1>
+                        <h1 class="!text-zinc-400">@${item.userName}</h1>
+                        </div>
+                    </div>
+                    <div id=userDetail class="flex items-center justify-end gap-2">
+                        <button class="cursor-pointer" onclick="addFollow(${item.userID})">Follow</button>
+                    </div>
+                </div>`
+        }
+        
+        
+    })
+    // displayAreaProfiles.innerHTML = profiles
+    //     console.log(profiles);
 }
 
 function profileGate() {
@@ -461,10 +503,7 @@ function viewProfile(currentUserId) {
                     <h1 class="!text-zinc-400"> @ ${userDetails.userName}</h1>
                     </div>
                 </div>
-                <div id=userDetail class="flex items-center justify-end gap-2">
-                    <button class="cursor-pointer" onclick="addFollow(${userDetails.userID})">Follow</button>
-                    <button onclick="addLike(${index})" ><i class="fa-regular fa-heart cursor-pointer"></i></button>
-                </div>
+                
             </div>
             <div class="px-4 text-justify">
                 <p>${posts[index].text}</p>
@@ -484,6 +523,7 @@ function userStateChange() {
     if(isLogin){
         isLogin = false
         accountAction.innerText = `Login`
+        profileGate()
     }else{
         profileGate()
     }
@@ -546,7 +586,10 @@ function addNewPost() {
 }
 
 
-window.addEventListener("load", loadAllPosts)
+window.addEventListener("load", () => {
+    loadAllPosts()
+    refreshProfiles()
+})
 
 
 

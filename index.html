@@ -36,18 +36,22 @@
         </ul>
     </div>
     
-    <div class="hidden lg:block fixed top-30 right-0 w-1/9">
-        <ul id="displayProfiles ">
-            <div class="flex justify-start items-center gap-2">
+    <div class="hidden lg:block fixed top-20 right-10 me-5 w-2/9">
+        <h2 class="text-center">Discover Profiles</h2>
+        <div class="grid grid-cols-1 gap-10 p-4 overflow-auto" id="displayAreaProfiles">
+                <!-- <div class="flex justify-start items-center gap-2">
                     <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
                     <div>
                     <h1>  ${userData.name}</h1>
-                    <h1 class="!text-zinc-400"> @${userData.userName}</h1>
+                    <h1 class="!text-zinc-400">@${userData.userName}</h1>
                     </div>
                 </div>
-        </ul>
+                <div id=userDetail class="flex items-center justify-end gap-2">
+                    <button class="cursor-pointer" onclick="addFollow(${userID})">Follow</button>
+                </div> -->
+            </div>
     </div>
-    <div class="w-full  grid grid-cols-1 lg:grid-cols-6 ">
+    <div class="w-full  grid grid-cols-1 lg:grid-cols-7 ">
         <div class="">
             <ul>
                 <li></li>
