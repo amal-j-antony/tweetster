@@ -32,13 +32,19 @@
             <li class="text-xl cursor-pointer">Bookmarks</li>
             <li class="text-xl cursor-pointer">Likes</li>
             <li onclick="profileGate()" class="text-xl cursor-pointer">Profile</li>
-            <li onclick="userStateChange()" class="text-xl" id="accountAction">Login</li>
+            <li onclick="userStateChange()" class="text-xl cursor-pointer"" id="accountAction">Login</li>
         </ul>
     </div>
     
-    <div class="fixed top-30 right-0 w-1/9">
+    <div class="hidden lg:block fixed top-30 right-0 w-1/9">
         <ul id="displayProfiles ">
-            <li>kljhlkjh</li>
+            <div class="flex justify-start items-center gap-2">
+                    <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
+                    <div>
+                    <h1>  ${userData.name}</h1>
+                    <h1 class="!text-zinc-400"> @${userData.userName}</h1>
+                    </div>
+                </div>
         </ul>
     </div>
     <div class="w-full  grid grid-cols-1 lg:grid-cols-6 ">
@@ -119,7 +125,7 @@
         </div>
     </div>
     <footer class="flex w-full lg:hidden fixed -bottom-4 px-20 justify-between py-5 pb-10 bg-black ">
-        <span onclick="refreshPosts()" class="text-xl cursor-pointer group"><i class="fa-solid fa-magnifying-glass"></i>
+        <span onclick="loadAllPosts()" class="text-xl cursor-pointer group"><i class="fa-solid fa-magnifying-glass"></i>
         </span>
         <span onclick="profileGate()" class="text-xl cursor-pointer group">
             <i class="fa-solid fa-user-shield"></i>

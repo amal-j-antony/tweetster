@@ -33,6 +33,13 @@ let accounts = [{
     userName: "LeeRobinson9",
     isFollowed: false,
     userProfile: "https://pbs.twimg.com/profile_images/1862717563311968256/xfgt1L9l_400x400.jpg"
+},
+{
+    userID: 6,
+    name: "AntaresXVIII",
+    userName: "admin",
+    isFollowed: false,
+    userProfile: "https://images.unsplash.com/photo-1779113940567-617ec0de80ad?q=80&w=930&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }]
 let posts = [{
     userID: 1,
@@ -101,10 +108,16 @@ let posts = [{
                     11. Quality over quantity. 3 really good, thoughtful, detailed, interesting projects versus a wall of 27 AI-slop ones.<br>
                     Remember that hiring managers / recruiters are getting hundreds or thousands of applications for a role. They're not going to spend 20 minutes on every single application. You need to cut the cruft and get to the point. I hope this helps you stand out!</div>`,
     image: ''
+},
+{
+    userID: 6,
+    isLiked: false,
+    text: "Hello World!!!",
+    image: "https://images.unsplash.com/photo-1598749516121-8b9e52a75d1d?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }]
-let users = []
+let users = [{userName:"admin",password:"admin"}]
 let following = []
-let history = []
+let postHistory = []
 let currentUserId = null
 
 
@@ -112,24 +125,11 @@ const loginForm = document.getElementById("loginForm")
 
 const displayArea = document.getElementById("displayArea")
 
-function addNewPost() {
-    if (isLogin) {
-        const newPostText = document.addEventListener("newPostText")
-        posts.push({
-            userID: currentUserId,
-            text: newPostText.value,
-            image: ''
-        })
-        refreshPosts()
-    }else{
-        alert('Log in to create posts')
-    }
 
-}
 
 
 const loadAllPosts = () => {
-    displayArea.innerHTML = `<form id="newPostForm">
+    displayArea.innerHTML = `
                 <div id="inputArea" class="flex justify-center w-full ">
                     <input id="newPostText" type="text" placeholder="Whats Happening?"
                         class="placeholder:text-white px-4 py-10 my-4 border-1 border-gray-600 w-[90%]">
@@ -137,16 +137,16 @@ const loadAllPosts = () => {
 
                 <div class="flex pe-12 justify-end items-center gap-5">
                     <i class="fa-regular fa-image text-3xl"></i>
-                    <button type="submit" class="border-1 border-blue-400 py-2 px-4 rounded-3xl bg-blue-400 ">POST</button>
+                    <button onclick="addNewPost()" type="submit" class="border-1 border-blue-400 py-2 px-4 rounded-3xl bg-blue-400 cursor-pointer">POST</button>
                 </div>
-            </form>`
+            `
 
     
-
+    postHistory = []
     let max = posts.length
     let i = 0
-    while ((history.length) < max) {
-        let postID = postIdGen(max, history)
+    while ((postHistory.length) < max) {
+        let postID = postIdGen(max, postHistory)
         console.log(postID);
         let currentUserId = posts[postID].userID
 
@@ -168,7 +168,7 @@ const loadAllPosts = () => {
                     <button onclick="addLike(${postID})" ><i class="fa-regular fa-heart cursor-pointer"></i></button>
                 </div>
             </div>
-            <div class="px-4 text-justify">
+            <div class="px-4 text-justify grid grid-cols-1 justify-center">
                 <p>${posts[postID].text}</p>
                 <img src="${posts[postID].image}" alt="">
             </div>
@@ -176,25 +176,19 @@ const loadAllPosts = () => {
         </div>`
         i++;
     }
-    const newPostForm = document.getElementById("newPostForm")
-    newPostForm.addEventListener("submit", e => {
-        e.preventDefault()
-        console.log(`submit!!!!`);
-        
-        addNewPost()
-    })
+    
 }
 
-const postIdGen = (max, history) => {
+const postIdGen = (max, postHistory) => {
     let postID = Math.floor(Math.random() * max)
 
-    if (!(history.includes(postID))) {
-        history.push(postID)
-        console.log(history);
+    if (!(postHistory.includes(postID))) {
+        postHistory.push(postID)
+        console.log(postHistory);
         return postID
 
     } else {
-        return postIdGen(max, history)
+        return postIdGen(max, postHistory)
     }
     return postID
 
@@ -225,18 +219,18 @@ function removeFollow(userId) {
 
 function refreshPosts() {
 
-    displayArea.innerHTML = `<form id="newPostForm">
+    displayArea.innerHTML = `
                 <div id="inputArea" class="flex justify-center w-full ">
-                    <input type="text" placeholder="Whats Happening?"
+                    <input id="newPostText" type="text" placeholder="Whats Happening?"
                         class="placeholder:text-white px-4 py-10 my-4 border-1 border-gray-600 w-[90%]">
                 </div>
 
                 <div class="flex pe-12 justify-end items-center gap-5">
                     <i class="fa-regular fa-image text-3xl"></i>
-                    <button class="border-1 border-blue-400 py-2 px-4 rounded-3xl bg-blue-400 ">POST</button>
+                    <button onclick="addNewPost()" class="border-1 border-blue-400 py-2 px-4 rounded-3xl bg-blue-400 cursor-pointer ">POST</button>
                 </div>
-            </form>`
-    history.forEach((i, index) => {
+            `
+    postHistory.forEach((i, index) => {
         let userID = posts[i].userID
         userData = accounts.find(a => a.userID == userID)
         if (userData.isFollowed) {
@@ -255,7 +249,7 @@ function refreshPosts() {
                     <button onclick="removeLike(${i})" ><i class="fa-solid fa-heart cursor-pointer"></i></button>
                 </div>
             </div>
-            <div class="px-4 text-justify">
+            <div class="px-4 text-justify grid grid-cols-1 justify-center">
                 <p>${posts[i].text}</p>
                 <img src="${posts[i].image}" alt="">
             </div>
@@ -276,7 +270,7 @@ function refreshPosts() {
                     <button onclick="addLike(${i})" ><i class="fa-regular fa-heart cursor-pointer"></i></button>
                 </div>
             </div>
-            <div class="px-4 text-justify">
+            <div class="px-4 text-justify grid grid-cols-1 justify-center">
                 <p>${posts[i].text}</p>
                 <img src="${posts[i].image}" alt="">
             </div>
@@ -299,7 +293,7 @@ function refreshPosts() {
                     <button onclick="removeLike(${i})" ><i class="fa-solid fa-heart cursor-pointer"></i></button>
                 </div>
             </div>
-            <div class="px-4 text-justify">
+            <div class="px-4 text-justify grid grid-cols-1 justify-center">
                 <p>${posts[i].text}</p>
                 <img src="${posts[i].image}" alt="">
             </div>
@@ -320,7 +314,7 @@ function refreshPosts() {
                     <button onclick="addLike(${i})" ><i class="fa-regular fa-heart cursor-pointer"></i></button>
                 </div>
             </div>
-            <div class="px-4 text-justify">
+            <div class="px-4 text-justify grid grid-cols-1 justify-center">
                 <p>${posts[i].text}</p>
                 <img src="${posts[i].image}" alt="">
             </div>
@@ -330,10 +324,7 @@ function refreshPosts() {
         }
     })
 
-    newPostForm.addEventListener("submit", e => {
-        e.preventDefault()
-        addNewPost()
-    })
+   
 }
 
 function profileGate() {
@@ -447,41 +438,56 @@ function viewProfile(currentUserId) {
     <div class="lg:grid-cols-6">
         <div class=""></div>
         <div class="lg:col-span-4">
-            <div class="" id="userPostsDisp">
+            <div class="text-center" id="userPostsDisp">
                 
             </div>
         </div>
         <div class=""></div>
     </div>
     `
-    const userPostsDisp = document.addEventListener("userPostsDisp")
-    posts.forEach(a => {
+    const userPostsDisp = document.getElementById("userPostsDisp")
+    
+    posts.forEach((a,index) => {
         if (a.userID == currentUserId) {
+            
+            console.log(a);
+            const userDetails = accounts.find(a => a.userID == currentUserId)
             userPostsDisp.innerHTML += `<div class="card">
-            <div class="flex justify-between p-4">
+            <div class="flex justify-between p-4 mt-20">
                 <div class="flex justify-start items-center gap-2">
-                    <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
+                    <img src="${userDetails.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
                     <div>
-                    <h1>  ${userData.name}</h1>
-                    <h1 class="!text-zinc-400"> @${userData.userName}</h1>
+                    <h1>  ${userDetails.name}</h1>
+                    <h1 class="!text-zinc-400"> @ ${userDetails.userName}</h1>
                     </div>
                 </div>
                 <div id=userDetail class="flex items-center justify-end gap-2">
-                    <button class="cursor-pointer" onclick="addFollow(${userID})">Follow</button>
-                    <button onclick="addLike(${i})" ><i class="fa-regular fa-heart cursor-pointer"></i></button>
+                    <button class="cursor-pointer" onclick="addFollow(${userDetails.userID})">Follow</button>
+                    <button onclick="addLike(${index})" ><i class="fa-regular fa-heart cursor-pointer"></i></button>
                 </div>
             </div>
             <div class="px-4 text-justify">
-                <p>${posts[i].text}</p>
-                <img src="${posts[i].image}" alt="">
+                <p>${posts[index].text}</p>
+                <img src="${posts[index].image}" alt="">
             </div>
             <hr class="my-3">
         </div>`
         }
     })
+    if (userPostsDisp.innerHTML == '') {
+        userPostsDisp.innerHTML = 'Add Some posts'
+    }
 }
 
-
+function userStateChange() {
+    const accountAction = document.getElementById("accountAction")
+    if(isLogin){
+        isLogin = false
+        accountAction.innerText = `Login`
+    }else{
+        profileGate()
+    }
+}
 
 
 
@@ -490,16 +496,27 @@ function userAuth() {
     const loginForm = document.getElementById("loginForm")
     loginForm.addEventListener("submit", e => {
         e.preventDefault()
-        const loginName = document.getElementById("loginName")
-        const loginPassword = document.getElementById("loginPassword")
+        const loginName = document.getElementById("loginName").value
+        const loginPassword = document.getElementById("loginPassword").value
         userData = users.find(a => a.userName == loginName)
+        console.log(loginName);
+        
         if (userData) {
             if (userData.password == loginPassword) {
                 isLogin = true
+                const accountAction = document.getElementById("accountAction")
+                accountAction.textContent = 'Log Out'
                 let userAccountData = accounts.find(a => a.userName == loginName)
+                console.log(userAccountData);
+                
                 if (!userAccountData.name) {
                     onBoarding(userAccountData.userName,)
+                }else{
+                    currentUserId = userAccountData.userID
+                    profileGate()
                 }
+            }else {
+                alert('Invalid password')
             }
         } else {
             alert("Invalid username/password")
@@ -508,8 +525,28 @@ function userAuth() {
     })
 }
 
+function addNewPost() {
+    if (isLogin) {
+        const newPostText = document.getElementById("newPostText")?.value
+        console.log(newPostText);
+        
+        posts.push({
+            userID: currentUserId,
+            isLiked: false ,
+            text: newPostText,
+            image: ''
+        })
+        console.log(posts[posts.length - 1]);
+        postHistory.unshift(posts.length - 1)
+        refreshPosts()
+    }else{
+        alert('Log in to create posts')
+    }
 
-window.addEventListener("load", loadAllPosts())
+}
+
+
+window.addEventListener("load", loadAllPosts)
 
 
 
