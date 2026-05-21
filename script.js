@@ -65,6 +65,12 @@ let posts = [{
     image: 'https://pbs.twimg.com/media/HGMHM1FXAAAuWbO?format=jpg&name=large'
 },
 {
+    userID: 2,
+    isLiked: false,
+    text: 'One of the most efficient ways to figure out who YOU are and what you are good at comes down to how effortless it feels to work on specific things. Whenever something feels effortless and hours start to pass quickly, it means you are doing something right and should pay attention',
+    image: 'https://images.unsplash.com/photo-1779071267081-3b4d5d884388?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+},
+{
     userID: 3,
     isLiked: false,
     text: `<div class="text-left text-white">"someone asked Beej how sockets work in C. he got tired of explaining it. so in 1995 he put it all online.
@@ -115,16 +121,38 @@ let posts = [{
     text: "Hello World!!!",
     image: "https://images.unsplash.com/photo-1598749516121-8b9e52a75d1d?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 }]
-let users = [{userName:"admin",password:"admin"}]
+let users = [{ userName: "admin", password: "admin" }]
 let following = []
-let postHistory = []
+let postHistory = null
 let currentUserId = null
 
+if(sessionStorage.getItem("users")){
+    users = JSON.parse(sessionStorage.getItem("users"))
+}
+
+if(sessionStorage.getItem("posts")){
+    posts = JSON.parse(sessionStorage.getItem("posts"))
+}
+
+if(sessionStorage.getItem("accounts")){
+    accounts = JSON.parse(sessionStorage.getItem("accounts"))
+}
 
 const loginForm = document.getElementById("loginForm")
 
 const displayArea = document.getElementById("displayArea")
 
+function storePosts(){
+    sessionStorage.setItem("posts",JSON.stringify(posts))
+}
+
+function storeAccounts(){
+    sessionStorage.setItem("accounts",JSON.stringify(accounts))
+}
+
+function storeUsers(){
+    sessionStorage.setItem("users",JSON.stringify(users))
+}
 
 
 
@@ -135,16 +163,18 @@ const loadAllPosts = () => {
                         class="placeholder:text-white px-4 py-10 my-4 border-1 border-gray-600 w-[90%]">
                 </div>
 
-                <div class="flex pe-12 justify-end items-center gap-5">
-                    <i class="fa-regular fa-image text-3xl"></i>
+                <div class="flex px-12 justify-between items-center gap-5">
+                    <input id="newPostImage" class="border-1 border-gray-600 w-[90%] py-2 placeholder:text-white px-4" type="text" placeholder="Share a cool image(url)!">
                     <button onclick="addNewPost()" type="submit" class="border-1 border-blue-400 py-2 px-4 rounded-3xl bg-blue-400 cursor-pointer">POST</button>
                 </div>
             `
 
-    
+
     postHistory = []
     let max = posts.length
     let i = 0
+    
+
     while ((postHistory.length) < max) {
         let postID = postIdGen(max, postHistory)
         console.log(postID);
@@ -168,7 +198,7 @@ const loadAllPosts = () => {
                     <button onclick="addLike(${postID})" ><i class="fa-regular fa-heart cursor-pointer"></i></button>
                 </div>
             </div>
-            <div class="px-4 text-justify grid grid-cols-1 justify-center">
+            <div class="px-4 text-justify grid grid-cols-1 justify-center items-center">
                 <p>${posts[postID].text}</p>
                 <img src="${posts[postID].image}" alt="">
             </div>
@@ -176,22 +206,35 @@ const loadAllPosts = () => {
         </div>`
         i++;
     }
-    
+
 }
+
+
 
 const postIdGen = (max, postHistory) => {
     let postID = Math.floor(Math.random() * max)
 
     if (!(postHistory.includes(postID))) {
-        postHistory.push(postID)
         console.log(postHistory);
         return postID
 
     } else {
         return postIdGen(max, postHistory)
     }
-    return postID
+    
 
+}
+
+function postHistoryGen() {
+    console.log('postHistoryGen');
+    
+    postHistory = []
+    let max = posts.length
+    while(postHistory.length != posts.length){
+        postHistory.push(postIdGen(max,postHistory))
+    }
+    console.log(`new post history:`,postHistory);
+    return postHistory
 }
 
 function addLike(postID) {
@@ -219,6 +262,8 @@ function removeFollow(userId) {
 }
 
 
+
+
 function refreshPosts() {
 
     displayArea.innerHTML = `
@@ -227,11 +272,17 @@ function refreshPosts() {
                         class="placeholder:text-white px-4 py-10 my-4 border-1 border-gray-600 w-[90%]">
                 </div>
 
-                <div class="flex pe-12 justify-end items-center gap-5">
-                    <i class="fa-regular fa-image text-3xl"></i>
-                    <button onclick="addNewPost()" class="border-1 border-blue-400 py-2 px-4 rounded-3xl bg-blue-400 cursor-pointer ">POST</button>
+                <div class="flex px-12 justify-between items-center gap-5">
+                    <input id="newPostImage" class="border-1 border-gray-600 w-[90%] py-2 placeholder:text-white px-4" type="text" placeholder="Share a cool image(url)!">
+                    <button onclick="addNewPost()" type="submit" class="border-1 border-blue-400 py-2 px-4 rounded-3xl bg-blue-400 cursor-pointer">POST</button>
                 </div>
             `
+    if(postHistory == null){
+       postHistory = postHistoryGen()
+    }
+    console.log(postHistory);
+    
+
     postHistory.forEach((i, index) => {
         let userID = posts[i].userID
         userData = accounts.find(a => a.userID == userID)
@@ -272,7 +323,7 @@ function refreshPosts() {
                     <button onclick="addLike(${i})" ><i class="fa-regular fa-heart cursor-pointer"></i></button>
                 </div>
             </div>
-            <div class="px-4 text-justify grid grid-cols-1 justify-center">
+            <div class="px-4 text-justify grid grid-cols-1 justify-center items-center">
                 <p>${posts[i].text}</p>
                 <img src="${posts[i].image}" alt="">
             </div>
@@ -326,15 +377,15 @@ function refreshPosts() {
         }
     })
 
-   
+
 }
 
 function refreshProfiles() {
     const displayAreaProfiles = document.getElementById("displayAreaProfiles")
     displayAreaProfiles.innerHTML = ''
-    let profiles = accounts.map((item,index) => {
-        if(item.isFollowed){
-            displayAreaProfiles.innerHTML+=  `
+    let profiles = accounts.map((item, index) => {
+        if (item.isFollowed) {
+            displayAreaProfiles.innerHTML += `
                 <div class="flex justify-between">
                     <div class="flex justify-start items-center gap-2">
                         <img src="${item.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
@@ -347,8 +398,8 @@ function refreshProfiles() {
                         <button class="cursor-pointer" onclick="removeFollow(${item.userID})">Unfollow</button>
                     </div>
                 </div>`
-        }else {
-             displayAreaProfiles.innerHTML+= `
+        } else {
+            displayAreaProfiles.innerHTML += `
                 <div class="flex justify-between">
                     <div class="flex justify-start items-center gap-2">
                         <img src="${item.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
@@ -362,8 +413,8 @@ function refreshProfiles() {
                     </div>
                 </div>`
         }
-        
-        
+
+
     })
     // displayAreaProfiles.innerHTML = profiles
     //     console.log(profiles);
@@ -471,7 +522,7 @@ function viewProfile(currentUserId) {
     let userDetails = accounts.find(a => a.userID == currentUserId)
     console.log(userDetails);
     isLogin = true
-    displayArea.innerHTML = `<div class="w-full h-[vh-70] flex flex-col gap-5 justify-center items-center">
+    displayArea.innerHTML = `<div class="w-full h-[vh-70] mt-20 flex flex-col gap-5 justify-center items-center">
         <img class="w-50 h-50" src='${userDetails.userProfile}' alt="">
         <h1>${userDetails.name}</h1>
         <h1>${userDetails.userName}</h1>
@@ -488,10 +539,10 @@ function viewProfile(currentUserId) {
     </div>
     `
     const userPostsDisp = document.getElementById("userPostsDisp")
-    
-    posts.forEach((a,index) => {
+
+    posts.forEach((a, index) => {
         if (a.userID == currentUserId) {
-            
+
             console.log(a);
             const userDetails = accounts.find(a => a.userID == currentUserId)
             userPostsDisp.innerHTML += `<div class="card">
@@ -503,7 +554,10 @@ function viewProfile(currentUserId) {
                     <h1 class="!text-zinc-400"> @ ${userDetails.userName}</h1>
                     </div>
                 </div>
-                
+                <div id=userDetail class="flex items-center justify-end gap-2">
+                    <button class="cursor-pointer" onclick="editPost(${index})">Edit</button>
+                    <button onclick="removePost(${index})" ><i class="fa-solid fa-trash cursor-pointer"></i></button>
+                </div>
             </div>
             <div class="px-4 text-justify">
                 <p>${posts[index].text}</p>
@@ -518,13 +572,46 @@ function viewProfile(currentUserId) {
     }
 }
 
+function editPost(index) {
+    const userPostsDisp = document.getElementById("userPostsDisp")
+    userPostsDisp.innerHTML = `<div class="">
+        <h1 class="text-center text-xl font-bold">Edit Post</h1>
+        <div class="flex justify-center items-center flex-col gap-5 my-5">
+            <input type="text" class="border border-1 py-10 px-20" id="postText">
+            <input type="text" class="border border-1 px-20" id="postImage">
+        </div>
+        <div class="flex justify-center items-center gap-5">
+            <button id="confirmEditBtn" class="border border-1 rounded-3xl p-2 bg-blue-500 cursor-pointer">Edit Post</button>
+            <button id="cancelEditBtn" class="border border-1 rounded-3xl p-2 cursor-pointer">Cancel</button>
+        </div>
+    </div>`
+    console.log(index,posts[index].text,posts[index].image);
+    
+
+    document.getElementById("postText").value = posts[index].text
+    document.getElementById("postImage").value = posts[index].image
+
+    document.getElementById("cancelEditBtn").addEventListener("click", () => viewProfile(currentUserId))
+
+    document.getElementById("confirmEditBtn").addEventListener("click", () => {
+        posts[index].text = document.getElementById("postText").value
+        posts[index].image = document.getElementById("postImage").value
+        viewProfile(currentUserId)
+    })
+}
+
+function removePost(index) {
+    posts.splice(index,1)
+    viewProfile(currentUserId)
+}
+
 function userStateChange() {
     const accountAction = document.getElementById("accountAction")
-    if(isLogin){
+    if (isLogin) {
         isLogin = false
         accountAction.innerText = `Login`
         profileGate()
-    }else{
+    } else {
         profileGate()
     }
 }
@@ -540,7 +627,7 @@ function userAuth() {
         const loginPassword = document.getElementById("loginPassword").value
         userData = users.find(a => a.userName == loginName)
         console.log(loginName);
-        
+
         if (userData) {
             if (userData.password == loginPassword) {
                 isLogin = true
@@ -548,14 +635,14 @@ function userAuth() {
                 accountAction.textContent = 'Log Out'
                 let userAccountData = accounts.find(a => a.userName == loginName)
                 console.log(userAccountData);
-                
+
                 if (!userAccountData.name) {
                     onBoarding(userAccountData.userName,)
-                }else{
+                } else {
                     currentUserId = userAccountData.userID
                     profileGate()
                 }
-            }else {
+            } else {
                 alert('Invalid password')
             }
         } else {
@@ -568,27 +655,153 @@ function userAuth() {
 function addNewPost() {
     if (isLogin) {
         const newPostText = document.getElementById("newPostText")?.value
+        const newPostImage = document.getElementById("newPostImage").value
         console.log(newPostText);
-        
+
         posts.push({
             userID: currentUserId,
-            isLiked: false ,
+            isLiked: false,
             text: newPostText,
-            image: ''
+            image: newPostImage
         })
         console.log(posts[posts.length - 1]);
         postHistory.unshift(posts.length - 1)
         refreshPosts()
-    }else{
+    } else {
         alert('Log in to create posts')
     }
 
 }
 
+function showFollowing() {
+    displayArea.innerHTML = ''
+    console.log(posts);
+    
+    posts.forEach((item,index) => {
+        console.log(item);
+        console.log(item.userID);
+        
+        
+        user = accounts.find(acc => acc.userID == item.userID )
+        console.log(user);
+        
+        if(user.isFollowed){
+            displayArea.innerHTML+= renderFollows(item.userID,index)
+        }
+    })
+    if(displayArea.innerHTML == ''){
+        displayArea.innerHTML= `<p class="text-center h-screen mt-40">Follow some profiles to see their posts here</p>`
+    }
+}
+
+function renderFollows(userID,postID){
+    userData = accounts.find(acc => acc.userID == userID)
+    
+    if(posts[postID].isLiked){
+        return(
+        `<div class="card">
+            <div class="flex justify-between p-4">
+                <div class="flex justify-start items-center gap-2">
+                    <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
+                    <div>
+                    <h1>  ${userData.name}</h1>
+                    <h1 class="!text-zinc-400">@${userData.userName}</h1>
+                    </div>
+                </div>
+                <div id=userDetail class="flex items-center justify-end gap-2">
+                    <button class="cursor-pointer" onclick="removeFollow(${userID})">Following</button>
+                    <button onclick="removeLike(${postID})" ><i class="fa-regular fa-heart cursor-pointer"></i></button>
+                </div>
+            </div>
+            <div class="px-4 text-justify grid grid-cols-1 justify-center">
+                <p>${posts[postID].text}</p>
+                <img src="${posts[postID].image}" alt="">
+            </div>
+            <hr class="my-3">
+        </div>`
+    )
+    }else {
+        return(
+            `<div class="card">
+            <div class="flex justify-between p-4">
+                <div class="flex justify-start items-center gap-2">
+                    <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
+                    <div>
+                    <h1>  ${userData.name}</h1>
+                    <h1 class="!text-zinc-400">@${userData.userName}</h1>
+                    </div>
+                </div>
+                <div id=userDetail class="flex items-center justify-end gap-2">
+                    <button class="cursor-pointer" onclick="removeFollow(${userID})">Following</button>
+                    <button onclick="addLike(${postID})" ><i class="fa-solid fa-heart cursor-pointer"></i></button>
+                </div>
+            </div>
+            <div class="px-4 text-justify grid grid-cols-1 justify-center">
+                <p>${posts[postID].text}</p>
+                <img src="${posts[postID].image}" alt="">
+            </div>
+            <hr class="my-3">
+        </div>`
+        )
+    }
+    
+}
+
+function showLikes() {
+    displayArea.innerHTML = ''
+    posts.forEach((item,index) => {
+        if(item.isLiked){
+            displayArea.innerHTML += renderLikes(item.userID,index)
+        }
+    })
+
+}
+
+function renderLikes(userID,postID) {
+    userData = accounts.find(a => a.userID == userID)
+    return(
+            `<div class="card">
+            <div class="flex justify-between p-4">
+                <div class="flex justify-start items-center gap-2">
+                    <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
+                    <div>
+                    <h1>  ${userData.name}</h1>
+                    <h1 class="!text-zinc-400">@${userData.userName}</h1>
+                    </div>
+                </div>
+                <div id=userDetail class="flex items-center justify-end gap-2">
+                    <button class="cursor-pointer" onclick="removeFollow(${userID})">Following</button>
+                    <button onclick="removeLike(${postID})" ><i class="fa-solid fa-heart cursor-pointer"></i></button>
+                </div>
+            </div>
+            <div class="px-4 text-justify grid grid-cols-1 justify-center">
+                <p>${posts[postID].text}</p>
+                <img src="${posts[postID].image}" alt="">
+            </div>
+            <hr class="my-3">
+        </div>`
+        )
+}
+
+document.getElementById("showFollowing").addEventListener("click",showFollowing)
+
+document.getElementById("showLikes").addEventListener("click",showLikes)
+
+document.getElementById("loadFeedDesktop").addEventListener("click", () => {
+    postHistory = null
+    refreshPosts()
+})
+
+document.getElementById("loadFeedMobile").addEventListener("click", () => {
+    postHistory = null
+    refreshPosts()
+})
+
 
 window.addEventListener("load", () => {
-    loadAllPosts()
+    refreshPosts()
     refreshProfiles()
+    // postHistoryGen()
 })
 
 

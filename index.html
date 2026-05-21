@@ -18,6 +18,17 @@
 </head>
 
 <body class="bg-black ">
+    <!-- <div class="">
+        <h1 class="text-center text-xl font-bold">Edit Post</h1>
+        <div class="flex justify-center items-center flex-col gap-5 my-5">
+            <input type="text" class="border border-1 py-10 px-20" id="postText">
+            <input type="text" class="border border-1 px-20" id="postImage">
+        </div>
+        <div class="flex justify-center items-center gap-5">
+            <button class="border border-1 rounded-3xl p-2 bg-blue-500">Edit Post</button>
+            <button class="border border-1 rounded-3xl p-2">Cancel</button>
+        </div>
+    </div> -->
     <div class="sticky  top-0 bg-black w-full ">
         <div id="Header" class=" flex justify-center px-20 py-5 text-xl font-bold">
             TweetSter
@@ -26,11 +37,11 @@
     </div>
     <div class="hidden lg:block fixed top-30 left-0 w-1/9">
         <ul class="ms-20 grid grid-cols-1 gap-5">
-            <li onclick="refreshPosts()" class="text-xl cursor-pointer">Feed</li>
-            <li class="text-xl cursor-pointer">Following</li>
-            <li class="text-xl cursor-pointer">Trending</li>
-            <li class="text-xl cursor-pointer">Bookmarks</li>
-            <li class="text-xl cursor-pointer">Likes</li>
+            <li id="loadFeedDesktop" class="text-xl cursor-pointer">Feed</li>
+            <li id="showFollowing" class="text-xl cursor-pointer">Following</li>
+            <!-- <li class="text-xl cursor-pointer">Trending</li> -->
+            <!-- <li class="text-xl cursor-pointer">Bookmarks</li> -->
+            <li id="showLikes" class="text-xl cursor-pointer">Likes</li>
             <li onclick="profileGate()" class="text-xl cursor-pointer">Profile</li>
             <li onclick="userStateChange()" class="text-xl cursor-pointer"" id="accountAction">Login</li>
         </ul>
@@ -58,17 +69,17 @@
             </ul>
         </div>
         <div class="lg:col-span-4 border-l border-r border-white h-[100%]">
-            <!-- <form id="newPostForm">
-                <div id="inputArea" class="flex justify-center w-full ">
+            
+                <!-- <div id="inputArea" class="flex justify-center w-full ">
                     <input type="text" placeholder="Whats Happening?"
                         class="placeholder:text-white px-4 py-10 my-4 border-1 border-gray-600 w-[90%]">
                 </div>
 
-                <div class="flex pe-12 justify-end items-center gap-5">
-                    <i class="fa-regular fa-image text-3xl"></i>
-                    <button class="border-1 border-blue-400 py-2 px-4 rounded-3xl bg-blue-400 ">POST</button>
-                </div>
-            </form> -->
+                <div class="flex px-12 justify-between items-center gap-5">
+                    <input class="border-1 border-gray-600 w-[90%] py-2 placeholder:text-white px-4" type="text" placeholder="Share a cool image(url)!">
+                    <button class="border-1 border-blue-400 py-2 w-20 rounded-3xl bg-blue-400 ">POST</button>
+                </div> -->
+            
 
             <div class="" id="displayArea">
                 <div class="card">
@@ -129,7 +140,7 @@
         </div>
     </div>
     <footer class="flex w-full lg:hidden fixed -bottom-4 px-20 justify-between py-5 pb-10 bg-black ">
-        <span onclick="loadAllPosts()" class="text-xl cursor-pointer group"><i class="fa-solid fa-magnifying-glass"></i>
+        <span id="loadFeedMobile" class="text-xl cursor-pointer group"><i class="fa-solid fa-rectangle-list"></i>
         </span>
         <span onclick="profileGate()" class="text-xl cursor-pointer group">
             <i class="fa-solid fa-user-shield"></i>
