@@ -280,7 +280,7 @@ function refreshPosts() {
                         class="placeholder:text-white px-4 py-10 my-4 border-1 border-gray-600 rounded-xl w-[90%]">
                 </div>
 
-                <div class="flex px-12 justify-between items-center gap-5">
+                <div class="flex px-12 justify-between items-center gap-5 pb-10 border-1 border-black border-b-white">
                     <input id="newPostImage" class="border-1 border-gray-600 rounded-xl w-[90%] py-2 placeholder:text-white px-4" type="text" placeholder="Share a cool image(url)!">
                     <button onclick="addNewPost()" type="submit" class="border-1 border-blue-400 py-2 px-4 rounded-3xl bg-blue-400 cursor-pointer">POST</button>
                 </div>
