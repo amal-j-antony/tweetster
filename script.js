@@ -138,21 +138,25 @@ if(sessionStorage.getItem("accounts")){
     accounts = JSON.parse(sessionStorage.getItem("accounts"))
 }
 
+function storeData(method){
+    console.log("method:",method,typeof(method));
+    
+    if(method === 'accounts'){
+        return sessionStorage.setItem("accounts",JSON.stringify(accounts))
+    }else if(method === 'users'){
+        return sessionStorage.setItem("users",JSON.stringify(users))
+    }else if(method === 'posts'){
+        return sessionStorage.setItem("posts",JSON.stringify(posts))
+    }else{
+        console.log('ERROR....Specify which item to save');
+        
+    }
+    return
+}
+
 const loginForm = document.getElementById("loginForm")
 
 const displayArea = document.getElementById("displayArea")
-
-function storePosts(){
-    sessionStorage.setItem("posts",JSON.stringify(posts))
-}
-
-function storeAccounts(){
-    sessionStorage.setItem("accounts",JSON.stringify(accounts))
-}
-
-function storeUsers(){
-    sessionStorage.setItem("users",JSON.stringify(users))
-}
 
 
 
@@ -239,17 +243,20 @@ function postHistoryGen() {
 
 function addLike(postID) {
     posts[postID].isLiked = true
+    storeData('posts')
     refreshPosts()
 }
 
 function removeLike(postID) {
     posts[postID].isLiked = false
+    storeData('posts')
     refreshPosts()
 }
 
 const addFollow = (userId) => {
     index = accounts.findIndex(a => a.userID == userId)
     accounts[index].isFollowed = true
+    storeData('accounts')
     refreshPosts()
     refreshProfiles()
 }
@@ -257,6 +264,7 @@ const addFollow = (userId) => {
 function removeFollow(userId) {
     index = accounts.findIndex(a => a.userID == userId)
     accounts[index].isFollowed = false
+    storeData('accounts')
     refreshPosts()
     refreshProfiles()
 }
@@ -512,7 +520,7 @@ function onBoarding(newUserName, newPasswordVal) {
         currentUserId = accounts.length
         console.log(currentUserId);
         console.log(accounts);
-
+        storeData('users')
         viewProfile(currentUserId)
     })
 
@@ -522,10 +530,11 @@ function viewProfile(currentUserId) {
     let userDetails = accounts.find(a => a.userID == currentUserId)
     console.log(userDetails);
     isLogin = true
-    displayArea.innerHTML = `<div class="w-full h-[vh-70] mt-20 flex flex-col gap-5 justify-center items-center">
+    displayArea.innerHTML = `<div class="w-full h-[vh-70] mt-20 mb-10 pb-5 flex flex-col gap-5 justify-center items-center border-1 border-black border-b-white">
         <img class="w-50 h-50" src='${userDetails.userProfile}' alt="">
-        <h1>${userDetails.name}</h1>
-        <h1>${userDetails.userName}</h1>
+        <h1 class = "text-3xl">${userDetails.name}</h1>
+        <h1 class = "text-xl">Username: ${userDetails.userName}</h1>
+        <button class = "text-xl border border-red-500 bg-red-500 text-white rounded-3xl py-2 px-3" onclick ="userStateChange()">Log Out</button>
         <h1 class="text-xl">Posts</h1>
     </div>
     <div class="lg:grid-cols-6">
@@ -546,7 +555,7 @@ function viewProfile(currentUserId) {
             console.log(a);
             const userDetails = accounts.find(a => a.userID == currentUserId)
             userPostsDisp.innerHTML += `<div class="card">
-            <div class="flex justify-between p-4 mt-20">
+            <div class="flex justify-between p-4">
                 <div class="flex justify-start items-center gap-2">
                     <img src="${userDetails.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
                     <div>
@@ -596,12 +605,14 @@ function editPost(index) {
     document.getElementById("confirmEditBtn").addEventListener("click", () => {
         posts[index].text = document.getElementById("postText").value
         posts[index].image = document.getElementById("postImage").value
+        storeData('posts')
         viewProfile(currentUserId)
     })
 }
 
 function removePost(index) {
     posts.splice(index,1)
+    storeData('posts')
     viewProfile(currentUserId)
 }
 
@@ -666,6 +677,7 @@ function addNewPost() {
         })
         console.log(posts[posts.length - 1]);
         postHistory.unshift(posts.length - 1)
+        storeData('posts')
         refreshPosts()
     } else {
         alert('Log in to create posts')
