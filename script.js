@@ -785,6 +785,10 @@ function renderLikes(userID,postID) {
 
 document.getElementById("showFollowing").addEventListener("click",showFollowing)
 
+document.getElementById("showFollowingMobile").addEventListener("click",showFollowing)
+
+document.getElementById("showLikesMobile").addEventListener("click",showLikes)
+
 document.getElementById("showLikes").addEventListener("click",showLikes)
 
 document.getElementById("loadFeedDesktop").addEventListener("click", () => {
