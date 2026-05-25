@@ -211,7 +211,7 @@ function addLike(postID) {
         profileGate()
     }
 
-    
+
 
 }
 
@@ -230,6 +230,7 @@ const addFollow = (userId) => {
         accounts[userPointer].followedAccounts.push(userId)
         storeData('accounts')
         refreshPosts()
+        refreshProfiles()
     } else {
         profileGate()
     }
@@ -256,7 +257,7 @@ function removeFollow(userId) {
     accounts[userPointer].followedAccounts = userFollows.filter(a => a != userId)
     storeData('accounts')
     refreshPosts()
-    
+    refreshProfiles()
 }
 
 
@@ -319,7 +320,7 @@ function refreshPosts() {
             if (accounts[userPointer].likedPostId.includes(i)) {
                 displayArea.innerHTML += `<div class="card">
               <div class="flex justify-between p-4">
-                  <div class="flex justify-start items-center gap-2">
+                  <div class="flex justify-start items-center gap-2 cursor-pointer" onclick = 'viewOtherProfiles(${userData.userID})'>
                       <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
                       <div>
                       <h1>  ${userData.name}</h1>
@@ -340,7 +341,7 @@ function refreshPosts() {
             } else {
                 displayArea.innerHTML += `<div class="card">
              <div class="flex justify-between p-4">
-                 <div class="flex justify-start items-center gap-2">
+                 <div class="flex justify-start items-center gap-2 cursor-pointer" onclick = 'viewOtherProfiles(${userData.userID})'>
                      <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
                      <div>
                      <h1>  ${userData.name}</h1>
@@ -363,7 +364,7 @@ function refreshPosts() {
             if (accounts[userPointer].likedPostId.includes(i)) {
                 displayArea.innerHTML += `<div class="card">
              <div class="flex justify-between p-4">
-                 <div class="flex justify-start items-center gap-2">
+                 <div class="flex justify-start items-center gap-2 cursor-pointer" onclick = 'viewOtherProfiles(${userData.userID})'>
                      <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
                      <div>
                      <h1>  ${userData.name}</h1>
@@ -384,7 +385,7 @@ function refreshPosts() {
             } else {
                 displayArea.innerHTML += `<div class="card">
              <div class="flex justify-between p-4">
-                 <div class="flex justify-start items-center gap-2">
+                 <div class="flex justify-start items-center gap-2 cursor-pointer" onclick = 'viewOtherProfiles(${userData.userID})'>
                      <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
                      <div>
                      <h1>  ${userData.name}</h1>
@@ -510,7 +511,7 @@ function refreshProfiles() {
 
         if (currentUserId == null) {
             displayAreaProfiles.innerHTML += `
-                <div class="flex justify-between">
+                <div class="flex justify-between w-full">
                     <div class="flex justify-start items-center gap-2">
                         <img src="${item.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
                         <div>
@@ -573,7 +574,7 @@ function profileGate() {
     } else {
         console.log('create account');
 
-        displayArea.innerHTML = `<div class="w-full h-[70vh] lg:h-[100vh]">
+        displayArea.innerHTML = `<div class="w-full h-[100vh] lg:h-[100vh] border border-black">
             <form id="loginForm" class="flex flex-col gap-5 h-full justify-center items-center">
                 <h1 class="text-3xl font-bold">Tweetster</h1>
                 <p class="text-xl">Login</p>
@@ -732,14 +733,17 @@ function viewProfile(currentUserId) {
 function viewOtherProfiles(userID) {
     let userDetails = accounts.find(a => a.userID == userID)
     console.log(userDetails);
-    displayArea.innerHTML = `<div class="w-full h-[vh-70] mt-20 mb-2 pb-5 flex max-md:flex-col  gap-20 justify-center items-center">
+    console.log('viewOtherProfiles');
+    
+    if (currentUserId == null) {
+        displayArea.innerHTML = `<div class="w-full h-[vh-70] mt-20 mb-2 pb-5 flex max-md:flex-col  gap-20 justify-center items-center">
         <img class="w-50 h-50 border-1 rounded-3xl" src='${userDetails.userProfile}' alt="">
         <div class="flex md:flex-col justify-between items-center gap-10">
             <div>
                 <h1 class = "text-3xl">${userDetails.name}</h1>
                 <h1 class = "text-xl">Username: ${userDetails.userName}</h1>
             </div>
-            <button class = "text-xl border border-red-500 bg-red-500 text-white rounded-3xl py-2 px-3" onclick ="userStateChange()">Log Out</button>
+            <button class = "text-xl  bg-gray-500 text-white rounded-3xl w-full py-1 px-2" onclick ="addFollow(${userID})">Follow</button>
         </div>
         
     </div>
@@ -754,6 +758,55 @@ function viewOtherProfiles(userID) {
         <div class=""></div>
     </div>
     `
+    }
+
+    else if (accounts[userPointer].followedAccounts.includes(userID)) {
+        displayArea.innerHTML = `<div class="w-full h-[vh-70] mt-20 mb-2 pb-5 flex max-md:flex-col  gap-20 justify-center items-center">
+        <img class="w-50 h-50 border-1 rounded-3xl" src='${userDetails.userProfile}' alt="">
+        <div class="flex md:flex-col justify-between items-center gap-10">
+            <div>
+                <h1 class = "text-3xl">${userDetails.name}</h1>
+                <h1 class = "text-xl">Username: ${userDetails.userName}</h1>
+            </div>
+            <button class = "text-xl  bg-gray-500 text-white rounded-3xl py-1 px-2 cursor-pointer" onclick ="removeFollow(${userID});viewOtherProfiles(${userID})">Following</button>
+        </div>
+        
+    </div>
+    <h1 class="text-xl text-center border-1 border-black border-b-white border-t-white py-5 font-bold">Posts</h1>
+    <div class="lg:grid-cols-6">
+        <div class=""></div>
+        <div class="lg:col-span-4">
+            <div class="text-center" id="userPostsDisp">
+                
+            </div>
+        </div>
+        <div class=""></div>
+    </div>
+    `
+    } else {
+        displayArea.innerHTML = `<div class="w-full h-[vh-70] mt-20 mb-2 pb-5 flex max-md:flex-col  gap-20 justify-center items-center">
+        <img class="w-50 h-50 border-1 rounded-3xl" src='${userDetails.userProfile}' alt="">
+        <div class="flex md:flex-col justify-between items-center gap-10">
+            <div>
+                <h1 class = "text-3xl">${userDetails.name}</h1>
+                <h1 class = "text-xl">Username: ${userDetails.userName}</h1>
+            </div>
+            <button class = "text-xl  bg-gray-500 text-white rounded-3xl py-1 px-2 cursor-pointer" onclick ="addFollow(${userID});viewOtherProfiles(${userID})">Follow</button>
+        </div>
+        
+    </div>
+    <h1 class="text-xl text-center border-1 border-black border-b-white border-t-white py-5 font-bold">Posts</h1>
+    <div class="lg:grid-cols-6">
+        <div class=""></div>
+        <div class="lg:col-span-4">
+            <div class="text-center" id="userPostsDisp">
+                
+            </div>
+        </div>
+        <div class=""></div>
+    </div>
+    `
+    }
     const userPostsDisp = document.getElementById("userPostsDisp")
 
     posts.forEach((a, index) => {
@@ -783,7 +836,7 @@ function viewOtherProfiles(userID) {
         }
     })
     if (userPostsDisp.innerHTML == '') {
-        userPostsDisp.innerHTML = 'Add Some posts'
+        userPostsDisp.innerHTML = 'This user has not posted yet'
     }
 }
 
@@ -986,22 +1039,7 @@ function showLikes() {
             displayArea.innerHTML = `<p class="text-center h-screen mt-40">Like some posts to see them here</p>`
         }
     } else {
-        console.log('showLikes');
-        displayArea.innerHTML = ''
-        posts.forEach((item, index) => {
-            console.log(item.userID, index);
-            console.log(accounts[userPointer].likedPostId.includes(index));
-
-            if (accounts[userPointer].likedPostId.includes(index)) {
-                console.log(item.userID, index);
-
-                displayArea.innerHTML += renderLikes(item.userID, index)
-
-            }
-        })
-        if (displayArea.innerHTML == '') {
-            displayArea.innerHTML = `<p class="text-center h-screen mt-40">Like some posts to see them here</p>`
-        }
+        profileGate()
     }
 }
 
