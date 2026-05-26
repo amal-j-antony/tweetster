@@ -54,7 +54,15 @@ let accounts = [{
     followedAccounts: [],
     likedPostId: [],
     userProfile: "https://images.unsplash.com/photo-1777973320887-3012937be88c?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-}
+},
+{
+    userID: 8,
+    name: "Pyrate",
+    userName: "CEOLandShark",
+    followedAccounts: [],
+    likedPostId: [],
+    userProfile: "https://pbs.twimg.com/profile_images/1763200846492270592/9BoVd5cZ_400x400.jpg"
+},
 ]
 let posts = [{
     userID: 1,
@@ -132,7 +140,13 @@ let posts = [{
     userID: 7,
     text: "Comfort is the enemy of progress",
     image: "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-}]
+},
+{
+    userID: 8,
+    text: "If you run a full bottleneck analysis in your life and actually get to the bottom of the thing (no matter how many layers deep) - the last bottleneck/domino will always be an emotion you're resisting. That's it. That's how funny and wonderful the actual human condition is.",
+    image: ""
+}
+]
 let users = [{ userName: "admin", password: "admin" },
 { userName: "test1", password: "admin" }
 ]
@@ -141,17 +155,17 @@ let postHistory = null
 let currentUserId = null
 let userPointer = null
 
-// if (sessionStorage.getItem("users")) {
-//     users = JSON.parse(sessionStorage.getItem("users"))
-// }
+if (sessionStorage.getItem("users")) {
+    users = JSON.parse(sessionStorage.getItem("users"))
+}
 
-// if (sessionStorage.getItem("posts")) {
-//     posts = JSON.parse(sessionStorage.getItem("posts"))
-// }
+if (sessionStorage.getItem("posts")) {
+    posts = JSON.parse(sessionStorage.getItem("posts"))
+}
 
-// if (sessionStorage.getItem("accounts")) {
-//     accounts = JSON.parse(sessionStorage.getItem("accounts"))
-// }
+if (sessionStorage.getItem("accounts")) {
+    accounts = JSON.parse(sessionStorage.getItem("accounts"))
+}
 
 function storeData(method) {
     console.log("method:", method, typeof (method));
@@ -210,9 +224,6 @@ function addLike(postID) {
     } else {
         profileGate()
     }
-
-
-
 }
 
 function removeLike(postID) {
@@ -307,9 +318,9 @@ function refreshPosts() {
                      <button onclick="addLike(${i})" ><i class="fa-regular fa-heart cursor-pointer"></i></button>
                  </div>
              </div>
-             <div class="px-4 text-justify grid grid-cols-1 justify-center">
+             <div class="px-4 text-justify grid grid-cols-1 justify-center items-center">
                  <p>${posts[i].text}</p>
-                 <img src="${posts[i].image}" alt="">
+                 <img class="mx-auto mt-4" src="${posts[i].image}" alt="">
              </div>
              <hr class="my-3">
          </div>`
@@ -334,7 +345,7 @@ function refreshPosts() {
               </div>
               <div class="px-4 text-justify grid grid-cols-1 justify-center">
                   <p>${posts[i].text}</p>
-                  <img src="${posts[i].image}" alt="">
+                  <img class="mx-auto mt-4" src="${posts[i].image}" alt="">
               </div>
               <hr class="my-3">
               </div>`
@@ -355,7 +366,7 @@ function refreshPosts() {
              </div>
              <div class="px-4 text-justify grid grid-cols-1 justify-center items-center">
                  <p>${posts[i].text}</p>
-                 <img src="${posts[i].image}" alt="">
+                 <img class="mx-auto mt-4" src="${posts[i].image}" alt="">
              </div>
              <hr class="my-3">
          </div>`
@@ -378,7 +389,7 @@ function refreshPosts() {
              </div>
              <div class="px-4 text-justify grid grid-cols-1 justify-center">
                  <p>${posts[i].text}</p>
-                 <img src="${posts[i].image}" alt="">
+                 <img class="mx-auto mt-4" src="${posts[i].image}" alt="">
              </div>
              <hr class="my-3">
          </div>`
@@ -399,107 +410,13 @@ function refreshPosts() {
              </div>
              <div class="px-4 text-justify grid grid-cols-1 justify-center">
                  <p>${posts[i].text}</p>
-                 <img src="${posts[i].image}" alt="">
+                 <img class="mx-auto mt-4" src="${posts[i].image}" alt="">
              </div>
              <hr class="my-3">
          </div>`
             }
         }
     })
-
-    // postHistory.forEach((i, index) => {
-    //     let userID = posts[i].userID
-    //     userData = accounts.find(a => a.userID == userID)
-    //     if (userData.isFollowed) {
-    //         if (posts[i].isLiked) {
-    //             displayArea.innerHTML += `<div class="card">
-    //         <div class="flex justify-between p-4">
-    //             <div class="flex justify-start items-center gap-2">
-    //                 <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
-    //                 <div>
-    //                 <h1>  ${userData.name}</h1>
-    //                 <h1 class="!text-zinc-400">@${userData.userName}</h1>
-    //                 </div>
-    //             </div>
-    //             <div id=userDetail class="flex items-center justify-end gap-2">
-    //                 <button class="cursor-pointer" onclick="removeFollow(${userID})">Following</button>
-    //                 <button onclick="removeLike(${i})" ><i class="fa-solid fa-heart cursor-pointer"></i></button>
-    //             </div>
-    //         </div>
-    //         <div class="px-4 text-justify grid grid-cols-1 justify-center">
-    //             <p>${posts[i].text}</p>
-    //             <img src="${posts[i].image}" alt="">
-    //         </div>
-    //         <hr class="my-3">
-    //     </div>`
-    //         } else {
-    //             displayArea.innerHTML += `<div class="card">
-    //         <div class="flex justify-between p-4">
-    //             <div class="flex justify-start items-center gap-2">
-    //                 <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
-    //                 <div>
-    //                 <h1>  ${userData.name}</h1>
-    //                 <h1 class="!text-zinc-400">@${userData.userName}</h1>
-    //                 </div>
-    //             </div>
-    //             <div id=userDetail class="flex items-center justify-end gap-2">
-    //                 <button class="cursor-pointer" onclick="removeFollow(${userID})">Following</button>
-    //                 <button onclick="addLike(${i})" ><i class="fa-regular fa-heart cursor-pointer"></i></button>
-    //             </div>
-    //         </div>
-    //         <div class="px-4 text-justify grid grid-cols-1 justify-center items-center">
-    //             <p>${posts[i].text}</p>
-    //             <img src="${posts[i].image}" alt="">
-    //         </div>
-    //         <hr class="my-3">
-    //     </div>`
-    //         }
-    //     } else {
-    //         if (posts[i].isLiked) {
-    //             displayArea.innerHTML += `<div class="card">
-    //         <div class="flex justify-between p-4">
-    //             <div class="flex justify-start items-center gap-2">
-    //                 <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
-    //                 <div>
-    //                 <h1>  ${userData.name}</h1>
-    //                 <h1 class="!text-zinc-400">@${userData.userName}</h1>
-    //                 </div>
-    //             </div>
-    //             <div id=userDetail class="flex items-center justify-end gap-2">
-    //                 <button class="cursor-pointer" onclick="addFollow(${userID})">Follow</button>
-    //                 <button onclick="removeLike(${i})" ><i class="fa-solid fa-heart cursor-pointer"></i></button>
-    //             </div>
-    //         </div>
-    //         <div class="px-4 text-justify grid grid-cols-1 justify-center">
-    //             <p>${posts[i].text}</p>
-    //             <img src="${posts[i].image}" alt="">
-    //         </div>
-    //         <hr class="my-3">
-    //     </div>`
-    //         } else {
-    //             displayArea.innerHTML += `<div class="card">
-    //         <div class="flex justify-between p-4">
-    //             <div class="flex justify-start items-center gap-2">
-    //                 <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
-    //                 <div>
-    //                 <h1>  ${userData.name}</h1>
-    //                 <h1 class="!text-zinc-400">@${userData.userName}</h1>
-    //                 </div>
-    //             </div>
-    //             <div id=userDetail class="flex items-center justify-end gap-2">
-    //                 <button class="cursor-pointer" onclick="addFollow(${userID})">Follow</button>
-    //                 <button onclick="addLike(${i})" ><i class="fa-regular fa-heart cursor-pointer"></i></button>
-    //             </div>
-    //         </div>
-    //         <div class="px-4 text-justify grid grid-cols-1 justify-center">
-    //             <p>${posts[i].text}</p>
-    //             <img src="${posts[i].image}" alt="">
-    //         </div>
-    //         <hr class="my-3">
-    //     </div>`
-    //         }
-    //     }
-    // })
 
 
 }
@@ -512,7 +429,7 @@ function refreshProfiles() {
         if (currentUserId == null) {
             displayAreaProfiles.innerHTML += `
                 <div class="flex justify-between w-full">
-                    <div class="flex justify-start items-center gap-2">
+                    <div class="flex justify-start items-center gap-2 cursor-pointer" onclick = "viewOtherProfiles(${item.userID})">
                         <img src="${item.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
                         <div>
                         <h1>  ${item.name}</h1>
@@ -529,7 +446,7 @@ function refreshProfiles() {
         if (accounts[userPointer].followedAccounts.includes(item.userID)) {
             displayAreaProfiles.innerHTML += `
                 <div class="flex justify-between">
-                    <div class="flex justify-start items-center gap-2">
+                    <div class="flex justify-start items-center gap-2 cursor-pointer" onclick="viewOtherProfiles(${item.userID})">
                         <img src="${item.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
                         <div>
                         <h1>  ${item.name}</h1>
@@ -543,7 +460,7 @@ function refreshProfiles() {
         } else {
             displayAreaProfiles.innerHTML += `
                 <div class="flex justify-between">
-                    <div class="flex justify-start items-center gap-2">
+                    <div class="flex justify-start items-center gap-2 cursor-pointer" onclick="viewOtherProfiles(${item.userID})">
                         <img src="${item.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
                         <div>
                         <h1>  ${item.name}</h1>
@@ -665,6 +582,7 @@ function onBoarding(newUserName, newPasswordVal) {
         console.log(currentUserId);
         console.log(accounts);
         storeData('users')
+        storeData('accounts')
         viewProfile(currentUserId)
     })
 
@@ -736,14 +654,14 @@ function viewOtherProfiles(userID) {
     console.log('viewOtherProfiles');
     
     if (currentUserId == null) {
-        displayArea.innerHTML = `<div class="w-full h-[vh-70] mt-20 mb-2 pb-5 flex max-md:flex-col  gap-20 justify-center items-center">
-        <img class="w-50 h-50 border-1 rounded-3xl" src='${userDetails.userProfile}' alt="">
-        <div class="flex md:flex-col justify-between items-center gap-10">
+        displayArea.innerHTML = `<div class="w-full h-[vh-70] mt-20 mb-2 pb-5 flex max-md:flex-col  gap-20 lg:gap-30 justify-center items-center">
+        <img class="w-50 h-50 border-1 rounded-xl" src='${userDetails.userProfile}' alt="">
+        <div class="flex md:flex-col justify-between items-center md:items-start gap-10">
             <div>
                 <h1 class = "text-3xl">${userDetails.name}</h1>
                 <h1 class = "text-xl">Username: ${userDetails.userName}</h1>
             </div>
-            <button class = "text-xl  bg-gray-500 text-white rounded-3xl w-full py-1 px-2" onclick ="addFollow(${userID})">Follow</button>
+            <button class = "text-xl  bg-gray-500 text-white rounded-3xl w-50 py-1 px-2 cursor-pointer" onclick ="addFollow(${userID})">Follow</button>
         </div>
         
     </div>
@@ -877,9 +795,11 @@ function removePost(index) {
 
 function userStateChange() {
     const accountAction = document.getElementById("accountAction")
+    const desktopProfileSidebar = document.getElementById("desktopProfileSidebar")
     if (isLogin) {
         isLogin = false
-        accountAction.innerText = `Login`
+        accountAction.innerHTML = '<i class="fa-solid fa-right-to-bracket" style="color: rgb(255, 255, 255);"></i><span>Login</span>'
+        desktopProfileSidebar.innerHTML = `<img src="https://media.istockphoto.com/id/1393750072/vector/flat-white-icon-man-for-web-design-silhouette-flat-illustration-vector-illustration-stock.jpg?s=612x612&w=0&k=20&c=s9hO4SpyvrDIfELozPpiB_WtzQV9KhoMUP9R9gVohoU=" class="w-20 h-20 border rounded-full" alt=""><span class="text-xl">Guest</span>`
         profileGate()
     } else {
         profileGate()
@@ -899,7 +819,9 @@ function userAuth() {
             if (userData.password == loginPassword) {
                 isLogin = true
                 const accountAction = document.getElementById("accountAction")
-                accountAction.textContent = 'Log Out'
+                accountAction.innerHTML = '<i class="fa-solid fa-arrow-right-from-bracket"></i><span>Log Out</span>'
+                const desktopProfileSidebar = document.getElementById("desktopProfileSidebar")
+                
                 let userAccountData = accounts.find(a => a.userName == loginName)
                 console.log(userAccountData);
 
@@ -910,6 +832,8 @@ function userAuth() {
                     userPointer = currentUserId - 1
                     profileGate()
                 }
+                refreshProfiles()
+                desktopProfileSidebar.innerHTML = `<img src=${userAccountData.userProfile} class="w-20 h-20 border rounded-full" alt=""><span class="text-xl">${userAccountData.name}</span>`
             } else {
                 alert('Invalid password')
             }

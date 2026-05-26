@@ -13,6 +13,10 @@
             color: white;
             /* outline: 1px red solid; */
         }
+
+        .no-scroll::-webkit-scrollbar{
+            display: none;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
@@ -35,8 +39,8 @@
         </div>
         <hr class="bg-[#ffffff]">
     </div>
-    <div class="hidden lg:block fixed top-30 -left-15 xl:-left-10 w-2/9">
-        <ul class="ms-20 grid grid-cols-1 gap-5">
+    <div class="hidden lg:block fixed top-30 -left-15 xl:-left-10 w-50">
+        <ul id="desktopLeft" class="ms-20 grid grid-cols-1 gap-5">
             <li id="loadFeedDesktop" class="text-xl cursor-pointer"><i class="fa-solid fa-list" style="color: rgb(255, 255, 255);"></i> Feed</li>
             <li id="showFollowing" class="text-xl cursor-pointer"><i class="fa-solid fa-user-group" style="color: rgb(255, 255, 255);"></i> Following</li>
             <!-- <li class="text-xl cursor-pointer">Trending</li> -->
@@ -44,12 +48,13 @@
             <li id="showLikes" class="text-xl cursor-pointer"><i class="fa-solid fa-heart" style="color: rgb(255, 255, 255);"></i> Likes</li>
             <li onclick="profileGate()" class="text-xl cursor-pointer"><i class="fa-solid fa-user-gear" style="color: rgb(255, 255, 255);"></i> Profile</li>
             <li onclick="userStateChange()" class="text-xl cursor-pointer"" id="accountAction"><i class="fa-solid fa-right-to-bracket" style="color: rgb(255, 255, 255);"></i> Login</li>
+            <li id="desktopProfileSidebar" onclick="profileGate()" class="pt-10 flex flex-col justify-center items-center gap-2 cursor-pointer"><img src="https://media.istockphoto.com/id/1393750072/vector/flat-white-icon-man-for-web-design-silhouette-flat-illustration-vector-illustration-stock.jpg?s=612x612&w=0&k=20&c=s9hO4SpyvrDIfELozPpiB_WtzQV9KhoMUP9R9gVohoU=" class="w-20 h-20 border rounded-full" alt=""><span class="text-xl">Guest</span></li>
         </ul>
     </div>
     
-    <div class="hidden lg:block fixed top-20 right-5 xl:right-10  w-3/12 xl:w-2/9 ">
+    <div class="hidden lg:block fixed top-20 right-5 xl:right-10 bottom-0 w-3/12 xl:w-2/9 overflow-y-auto no-scroll">
         <h2 class="text-center font-bold ">Discover Profiles</h2>
-        <div class="grid grid-cols-1 gap-10 p-4 overflow-auto" id="displayAreaProfiles">
+        <div class="grid grid-cols-1 gap-10 p-4" id="displayAreaProfiles">
                 <!-- <div class="flex justify-start items-center gap-2">
                     <img src="${userData.userProfile}" class="h-10 w-10 border-1 rounded-3xl" alt="">
                     <div>
@@ -68,7 +73,7 @@
                 <li></li>
             </ul>
         </div>
-        <div class="lg:col-span-4 border-l border-r border-white h-[100%]">
+        <div class="lg:col-span-4 border-l border-r border-white min-h-screen h-[100%]">
             
                 <!-- <div id="inputArea" class="flex justify-center w-full ">
                     <input type="text" placeholder="Whats Happening?"
